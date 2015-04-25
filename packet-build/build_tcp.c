@@ -34,7 +34,7 @@ int main()
 	}
 	int count = 0;
 	while(1){
-		//srcPrt = libnet_get_prand(LIBNET_PR16);
+		srcPrt = libnet_get_prand(LIBNET_PR16);
 		srcIp = libnet_get_prand(LIBNET_PRu32);
 		libnet_clear_packet(l);
 		t = libnet_build_tcp(srcPrt, dstPrt, 0x01010101, 0x02020202, TH_SYN, 32767,\
@@ -59,8 +59,8 @@ int main()
 		if(count % 1000 == 0)
 			printf("%d\n", count);
 		count ++;
-		usleep(10000);
-	//	sleep(1);
+	//	usleep(10000);
+		sleep(1);
 	}
 	libnet_destroy(l);
 	return 0;
