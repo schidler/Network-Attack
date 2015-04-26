@@ -204,6 +204,48 @@ ARP请求，受害者的ARP缓存永远不会过期。但是如果我们大宋�
 	2.请求半环： 在2.4.2中所描述的我们尝试去验证ARP应答发送者的合法性，通过像发送者发送ARP请求报文然后
 验证应答报文，如果在先前ARP应答报文中的源MAC地址与刚收到的源MAC地址不符那么判定为攻击并报警。
 	
-	3.应答半环
+	3.应答半环: 如果用定制化的网络协议栈我们会收到多个ARP请求的应答，像2.4.3节中描述的那样。在我们发送
+TCP SYN包到ARP请求源我们将会得到多个TCP（SYN/ACK 或者RST）报文，并且是不同的源MAC地址。这已足够我们判定
+是否是ARP攻击。
+	
+	尽管攻击者知道我们对于ARP欺骗攻击的检测方式，我们仍然能够检测到ARP攻击尽管攻击者使用特定的网络协议
+栈，但是我们就不能正确的获取正确的MAC与IP映射关系了。这是我们的方法针对于定制化的协议栈的唯一缺点。
 
+3 与被动防御方式的对比
+我们的方法显然比被动防御方式要快好多可靠好多。这个技术可以被用于大型网络而且能够立即检测到ARP欺骗攻击
+即使攻击在我们的检测攻击运行前开始。这是因为ARP学习时间远远长于我们在检测到ARP报文后主动探测的时间要
+长，我们的技术可以检测ARP欺骗，及不盲目的将结果插入数据库中，我们只插入正确的结果。即使在攻击正在进行
+的时候我们依然能够检测到正确的MAC地址与IP的映射关系。所以即使在最差的场景下（在刚说的定制化的网络协议
+栈）我们的方法依然比被动防御方式优秀很多。
+
+4 结论：
+这篇论文提出一个主动检测ARP欺骗攻击方式。我们已经展示了我们的技术相比于被动防御方式更快，更智能，扩展
+性更强。我们的技术也能够检测到正确的MAC与IP的映射即使是在攻击正在进行。在如今现存的一些定制化的网络协议
+栈中，我们的攻击检测方式依然能够很好的检测ARP攻击，尽管可能没法得到正确的MAC与IP的映射关系。因为我们在用
+一个积极的方式基于每个ARP报文来探测ARP攻击，显著缩小了学习及发现攻击之间的时差。网络负载不会因为我们
+会在网络中注入一些探测报文而变大，因为我们正对每台主机只进行一次ARP请求和一次TCP SYN探测。这些包在整个
+工具运行过程中只对于每个主机只会发送一次，所以这会针对大型网络具备很强的扩展性。
+
+参考文献
+
+
+1. D Plummer, “An Ethernet Address Resolution Protocol”, RFC-
+826, USC Information Science Institute, California, November 1982.
+http://www.ietf.org/rfc/rfc0826.txt
+2. Stevens, W. Richard. “TCP/IP Illustrated, Volume 1. The Protocols”. Addison
+Wesley Longman, Inc, 1994. ISBN: 0201633469.
+3. R.Wagner, “Address Resolution Protocol Spoofing and Man in the Middle Attacks”
+http://rr.sans.org/threats/address.php,2001.
+4. A. Ornaghi and M. Valleri, “A multipurpose sniffer for switched LANs”
+http://ettercap.sf.net.
+5. AtStake.com. Etherleak: Ethernet frame padding information leakage.
+http://www.atstake.com/research/advisories/2003/a010603-1.txt, 2003.
+6. Althes.  “The IP Smart spoofing”, InterOp Paris 2002.  http://www.althes.fr/ressources/avis/smartspoofing.htm
+7. Yuri Volobuev.  “Redir games with ARP and ICMP”.  http://lists.insecure.org/lists/bugtraq/1997/Sep/0059.html
+8. Fredric Raynal, Eric Detoisien, Cedric Blancher, “ARP-SK: a swiss knife tool for
+ARP”. http://www.ARP-sk.org/ 
+9. Lawrence Berkeley National Laboratory , “ARPWATCH tool”: ARP Spoofing De- tector. ftp://ftp.ee.lbl.gov/ARPwatch.tar.gz
+10. Danilo Bruschi, Alberto Ornaghi, Emilia Rosti , “S-ARP: a Secure Adderess Res- olution Protocol” 19th Annual Computer Security Applications Conference, 2003, www.acsac.org/2003/papers/111.pdf
+11. M. Barnaba, “Anticap” http://cvs.antifork.org/cvsweb.cgi/anticap, 2003
+12. I. Teterin , “Antidote” http://online.securityfocus.com/archive/1/299929
 
