@@ -47,6 +47,7 @@ void connection_delete(connection c) {
         b = b2;
     }
     free(c->data);
+	printf("%s \n" , "Free C");
     free(c);
 }
 

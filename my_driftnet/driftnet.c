@@ -394,8 +394,15 @@ void process_packet(u_char *user, const struct pcap_pkthdr *hdr, const u_char *p
     /* try to find the connection slot associated with this. */
     C = find_connection(&s, &d, ntohs(tcp.th_sport), ntohs(tcp.th_dport));
 #ifdef HONGYU_ADD
+	/*Track the first data block of http connection, and get http header*/
 	if(NULL == C){
-		printf("%s\n", pkt + off);
+		char *http_header = gethttp_header(pkt + off, len);
+		if(http_header){
+			printf("%s\n", http_header);
+			xfree(http_header);
+		}else{
+			printf("*************************This is not http data**********************\n");
+		}
 	}
 #endif //!HONGYU_ADD
 

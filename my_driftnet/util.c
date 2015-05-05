@@ -81,3 +81,25 @@ unsigned char *memstr(const unsigned char *haystack, const size_t hlen,
 }
 
 
+char *gethttp_header(const char *tcpdata, int len)
+{
+	char *delimi = NULL;
+	delimi = memstr(tcpdata, len, (unsigned char *)"\r\n\r\n", 4);
+	if(NULL == delimi)
+		return NULL;
+	char *http_header = NULL;
+	int http_header_len = delimi - tcpdata;
+	printf("http_header_length:%d\n", http_header_len);
+	http_header = xmalloc(http_header_len + 1);
+	http_header[http_header_len] = 0;
+	memcpy(http_header, tcpdata, http_header_len);
+	return http_header;
+}
+
+int ishttp(const char *tcpdata, int len)
+{
+	if(memstr(tcpdata, len, (unsigned char *)"\r\n\r\n", 4))
+		return 1;
+	return 0;
+}
+

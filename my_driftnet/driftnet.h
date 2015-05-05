@@ -90,6 +90,9 @@ void *xrealloc(void *w, size_t n);
 void xfree(void *v);
 char *xstrdup(const char *s);
 unsigned char *memstr(const unsigned char *haystack, const size_t hlen, const unsigned char *needle, const size_t nlen);
+/*Remeber memory release*/
+char *gethttp_header(const char *tcpdata, int len);
+int ishttp(const char *tcpdata, int len);
 
 #define TMPNAMELEN      64
 

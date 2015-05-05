@@ -98,3 +98,5 @@ tarball: $(SRCS) $(HDRS) $(TXTS)
 	mv driftnet-$(VERSION).tar.gz ..
 	
 # DO NOT DELETE
+run:
+	sudo ./driftnet
