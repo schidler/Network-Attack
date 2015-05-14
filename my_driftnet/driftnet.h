@@ -94,6 +94,14 @@ unsigned char *memstr(const unsigned char *haystack, const size_t hlen, const un
 char *gethttp_header(const char *tcpdata, int len);
 int ishttp(const char *tcpdata, int len);
 
+/*@header will be the http header you want to know */
+char *splithttp_header(const char *httpheader, const char *header);
+char *splithttp_host(const char *httpaheader);
+char *splithttp_cookie(const char *httpheader);
+/*Delete all tab and space,\r and \n will be NULL*/
+char *trim_space(char *str);
+void to_lower(char *str);
+void print_host_cookie(char *httpheader, char *host);
 #define TMPNAMELEN      64
 
 #endif /* __DRIFTNET_H_ */

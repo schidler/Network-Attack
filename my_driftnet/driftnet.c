@@ -48,9 +48,11 @@ unsigned int slotsused, slotsalloc;
 /* flags: verbose, adjunct mode, temporary directory to use, media types to
  * extract, beep on image. */
 int extract_images = 1;
+int extract_httpcookie = 0;
 int verbose, adjunct, beep;
 int tmpdir_specified;
 char *tmpdir;
+char *host = NULL;
 int max_tmpfiles;
 
 //enum mediatype { m_image = 1, m_audio = 2, m_text = 4 };
@@ -388,23 +390,26 @@ void process_packet(u_char *user, const struct pcap_pkthdr *hdr, const u_char *p
     memcpy(&tcp, pkt + pkt_offset + (ip.ip_hl << 2), sizeof(tcp));
     off = pkt_offset + (ip.ip_hl << 2) + (tcp.th_off << 2);
     len = hdr->caplen - off;
-
+	/*Track the first data block of http connection, and get http header*/
+	//Maybe keepalive request
+	if(extract_httpcookie){
+		char *http_header = gethttp_header(pkt + off, len);
+		if(http_header){
+			//printf("%s\n\n\n\n", http_header);
+			//printf("This is host:%s\n\n", splithttp_header(http_header, "Host:"));
+			print_host_cookie(http_header, host);
+			xfree(http_header);
+		}else{
+			//Do nothing
+		}
+	}else{//Just for extract http header
+		return ;
+	}
     /* XXX fragmented packets and other nasties. */
     
     /* try to find the connection slot associated with this. */
     C = find_connection(&s, &d, ntohs(tcp.th_sport), ntohs(tcp.th_dport));
-#ifdef HONGYU_ADD
-	/*Track the first data block of http connection, and get http header*/
-	if(NULL == C){
-		char *http_header = gethttp_header(pkt + off, len);
-		if(http_header){
-			printf("%s\n", http_header);
-			xfree(http_header);
-		}else{
-			printf("*************************This is not http data**********************\n");
-		}
-	}
-#endif //!HONGYU_ADD
+	
 
     /* no connection at all, so we need to allocate one. */
     if (!C) {
@@ -493,8 +498,7 @@ void *packet_capture_thread(void *v) {
 /* main:
  * Entry point. Process command line options, start up pcap and enter capture
  * loop. */
-char optstring[] = "abd:f:hi:M:m:pSsvx:";
-
+char optstring[] = "abcd:f:hH:i:M:m:pSsvx:";
 int main(int argc, char *argv[]) {
     char *interface = NULL, *filterexpr;
     int promisc = 1;
@@ -516,6 +520,12 @@ int main(int argc, char *argv[]) {
     opterr = 0;
     while ((c = getopt(argc, argv, optstring)) != -1) {
         switch(c) {
+			case 'c':
+				extract_httpcookie = 1;
+				break;
+			case 'H':
+				host = optarg;
+				break;
             case 'h':
                 usage(stdout);
                 return 0;
@@ -580,7 +590,6 @@ int main(int argc, char *argv[]) {
                 }
                 dumpfile = optarg;
                 break;
-
 #ifndef NO_DISPLAY_WINDOW
             case 'x':
                 savedimgpfx = optarg;
@@ -708,8 +717,10 @@ int main(int argc, char *argv[]) {
     setup_signals();
     
     /* Start up the audio player, if required. */
-    if (!adjunct && (extract_type & m_audio))
-        do_mpeg_player();
+	if (!adjunct && (extract_type & m_audio)){
+		if(!extract_httpcookie)
+			do_mpeg_player();
+	}
     
 #ifndef NO_DISPLAY_WINDOW
     /* Possibly fork to start the display child process */
