@@ -26,6 +26,7 @@ struct price_all p_for_courier;
 struct price_all p_for_customer;
 struct price_all p_for_less_loss;
 int num_of_pot, dis[MAXN][MAXN];
+vector<int> floyd_path[MAXN][MAXN];
 int num_of_road;
 int courier_cost_per_hour = 1;
 int num_of_range;
@@ -34,6 +35,7 @@ int init()
 	memset(&p_for_courier, 0, sizeof(p_for_courier));
 	memset(&p_for_customer, 0, sizeof(p_for_customer));
 	memset(&p_for_less_loss, 0, sizeof(p_for_less_loss));
+
 	p_for_courier.time_for_courier = INF*MAXN;
 	p_for_customer.avg_time_for_customer = INF*MAXN;
 	p_for_less_loss.loss = INF*MAXN;
@@ -41,6 +43,14 @@ int init()
 	for(i=0; i < MAXN; i++)
 		for(j=0; j < MAXN; j++){
 			dis[i][j] = INF;
+			if(i == j) 
+				dis[i][j] = 0;
+		}
+
+	for(i = 0; i < MAXN; i++)
+		for(j = 0; j < MAXN; j++){
+			floyd_path[i][j].push_back(i);
+			floyd_path[i][j].push_back(j);
 		}
 	return 0;
 }
@@ -63,18 +73,42 @@ int get_customer_loss_range()
 	return 0;
 }
 
-int show_ans(struct price_all p_a)
+int show_vector_path(vector<int> &path)
 {
-	printf("Courier spend:%d\n", p_a.time_for_courier * courier_cost_per_hour);
-	printf("Avg customer wait time:%d\n", p_a.avg_time_for_customer/(num_of_pot - 1));
-	printf("Loss:%d\n", p_a.loss);
-	printf("Path:0");
-	for(int i = 0; i < p_a.path.size(); i++)
-		printf("->%d", p_a.path[i]);
-	printf("->0\n\n");
+	for(int i = 1; i < path.size(); i++)
+		printf("->%d", path[i]);
 	return 0;
 }
 
+
+int show_ans(struct price_all p_a, const char *p = NULL)
+{
+	printf("%s\n", p);
+	printf("Courier spend:%d\n", p_a.time_for_courier * courier_cost_per_hour);
+	printf("Avg customer wait time:%d\n", p_a.avg_time_for_customer/(num_of_pot - 1));
+	printf("Loss:%d\n", p_a.loss);
+	printf("Path(Total):0");
+	for(int i = 0; i < p_a.path.size(); i++)
+		printf("->%d", p_a.path[i]);
+	printf("->0\n");
+	printf("Path detail:0");
+	show_vector_path(floyd_path[0][p_a.path[0]]);
+	for(int i = 1; i < p_a.path.size() ; i++){
+		show_vector_path(floyd_path[p_a.path[i - 1]][p_a.path[i]]);
+	}
+	show_vector_path(floyd_path[p_a.path[p_a.path.size() - 1]][0]);
+	printf("\n");
+	return 0;
+}
+
+int merge_path(vector<int> &a, vector<int> &b, vector<int> &c)
+{
+	a.clear();
+	a = b;
+	for(int i = 1; i < c.size(); i++)
+		a.push_back(c[i]);
+	return 0;
+}
 int main()
 {
 	int a = 0, b = 0, r_len = 0, i = 0, j = 0, k = 0;
@@ -100,10 +134,11 @@ int main()
 	for(k = 0; k < num_of_pot; k++)
 		for(i = 0; i < num_of_pot; i++)
 			for(j = 0; j < num_of_pot; j++){
-				dis[i][j] = min(dis[i][j], dis[i][k] + dis[k][j]);
+				if(dis[i][j] > dis[i][k] + dis[k][j]){
+					dis[i][j] = dis[i][k] + dis[k][j];
+					merge_path(floyd_path[i][j], floyd_path[i][k], floyd_path[k][j]);
+				}
 			}
-
-
 	/*
 	for(i=0; i < num_of_pot; i++){
 		for(j = 0; j < num_of_pot; j++){
@@ -171,9 +206,9 @@ int main()
 		}
 	}while(next_permutation(permutation.begin(), permutation.end()));
 
-	show_ans(p_for_courier);
-	show_ans(p_for_customer);
-	show_ans(p_for_less_loss);
+	show_ans(p_for_courier, "Best path for courier");
+	show_ans(p_for_customer, "Best path for customer");
+	show_ans(p_for_less_loss, "Best path for both");
 	return 0;
 }
 
