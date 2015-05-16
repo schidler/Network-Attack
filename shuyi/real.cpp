@@ -54,6 +54,7 @@ int init()
 		}
 	return 0;
 }
+
 int get_customer_loss_range()
 {
 	scanf("%d", &courier_cost_per_hour);
@@ -109,6 +110,7 @@ int merge_path(vector<int> &a, vector<int> &b, vector<int> &c)
 		a.push_back(c[i]);
 	return 0;
 }
+
 int main()
 {
 	int a = 0, b = 0, r_len = 0, i = 0, j = 0, k = 0;
@@ -169,6 +171,7 @@ int main()
 			else 
 				pos ++;
 		}
+
 		loss += clr[pos].cost;
 		for(i = 1; i < num_of_pot - 1; i++){
 			dis_for_courier += dis[permutation[i - 1]][permutation[i]];
@@ -186,6 +189,7 @@ int main()
 			}
 			loss += clr[pos].cost;
 		}
+
 		dis_for_courier += dis[permutation[permutation.size() - 1]][0];
 		loss += dis_for_courier * courier_cost_per_hour;
 		tmp.path = permutation;
