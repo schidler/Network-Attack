@@ -15,13 +15,20 @@ struct price_all{
 	int loss;
 };
 
+//from low to high [begin, end)
+struct customer_loss_range{
+	int begin;
+	int end;
+	int cost;
+};
+vector<customer_loss_range> clr;
 struct price_all p_for_courier;
 struct price_all p_for_customer;
 struct price_all p_for_less_loss;
 int num_of_pot, dis[MAXN][MAXN];
 int num_of_road;
 int courier_cost_per_hour = 1;
-
+int num_of_range;
 int init()
 {
 	memset(&p_for_courier, 0, sizeof(p_for_courier));
@@ -37,6 +44,25 @@ int init()
 		}
 	return 0;
 }
+int get_customer_loss_range()
+{
+	scanf("%d", &courier_cost_per_hour);
+	scanf("%d", &num_of_range);
+	struct customer_loss_range tmp;
+	for(int i = 0; i < num_of_range; i++){
+		scanf("%d%d%d", &tmp.begin, &tmp.end, &tmp.cost);
+		if(tmp.begin >= tmp.end){
+			fprintf(stderr, "begin must small then end !!!\n");
+			exit(1);
+		}
+		if(i > 0 && tmp.begin != clr[clr.size() - 1].end){
+			fprintf(stderr, "Price range data out of order !!!\n");
+		}
+		clr.push_back(tmp);
+	}
+	return 0;
+}
+
 int show_ans(struct price_all p_a)
 {
 	printf("Courier spend:%d\n", p_a.time_for_courier * courier_cost_per_hour);
@@ -48,6 +74,7 @@ int show_ans(struct price_all p_a)
 	printf("->0\n\n");
 	return 0;
 }
+
 int main()
 {
 	int a = 0, b = 0, r_len = 0, i = 0, j = 0, k = 0;
@@ -55,7 +82,7 @@ int main()
 	/*输入顶点的个数，包括起点，起点编号为0*/
 	scanf("%d", &num_of_pot);
 	if(num_of_pot > MAXN){
-		fprintf(stderr, "Too much pot here!!!\n");
+		fprintf(stderr, "Too much pot here !!!\n");
 		exit(1);
 	}
 	/*输入路径条数*/
@@ -64,32 +91,68 @@ int main()
 	for(i = 0; i < num_of_road; i++){
 		scanf("%d%d%d", &a, &b, &r_len);
 		if(a >= MAXN || b >= MAXN || a < 0 || b < 0){
-			fprintf(stderr, "Illegal pot number!!!\n");
+			fprintf(stderr, "Illegal pot number !!!\n");
 			exit(1);
 		}
 		dis[a][b] = r_len;
-	}
+	} 
+	get_customer_loss_range();
 	for(k = 0; k < num_of_pot; k++)
 		for(i = 0; i < num_of_pot; i++)
 			for(j = 0; j < num_of_pot; j++){
 				dis[i][j] = min(dis[i][j], dis[i][k] + dis[k][j]);
 			}
 
+
+	/*
+	for(i=0; i < num_of_pot; i++){
+		for(j = 0; j < num_of_pot; j++){
+			printf("%d ", dis[i][j]);
+		}
+		printf("\n");
+	}*/
 	vector<int> permutation;
 	for(i = 1; i < num_of_pot; i++) 
 		permutation.push_back(i);
 	struct price_all tmp;
+	int pos = 0;
 	do{
+		
 		int dis_for_courier = dis[0][permutation[0]];
 		int avg_time_for_customer = 0, now_time = dis[0][permutation[0]];
 		int loss = 0;//Just stand here,use later
 		avg_time_for_customer += now_time;
-		for(i = 1; i < num_of_pot; i++){
+
+		if(now_time < clr[0].begin || now_time >= clr[clr.size() - 1].end){
+			fprintf(stderr, "Customer time cost out of range\n");
+			exit(1);
+		}
+
+		while(pos < clr.size() -1){
+			if(now_time >= clr[pos].begin && now_time < clr[pos].end)
+				break;
+			else 
+				pos ++;
+		}
+		loss += clr[pos].cost;
+		for(i = 1; i < num_of_pot - 1; i++){
 			dis_for_courier += dis[permutation[i - 1]][permutation[i]];
 			now_time += dis[permutation[i - 1]][permutation[i]];
 			avg_time_for_customer += now_time;
+			if(now_time < clr[0].begin || now_time >= clr[clr.size() - 1].end){
+				fprintf(stderr, "Customer time cost out of range\n");
+				exit(1);
+			}
+			while(pos < clr.size() -1){
+				if(now_time >= clr[pos].begin && now_time < clr[pos].end)
+					break;
+				else 
+					pos ++;
+			}
+			loss += clr[pos].cost;
 		}
-
+		dis_for_courier += dis[permutation[permutation.size() - 1]][0];
+		loss += dis_for_courier * courier_cost_per_hour;
 		tmp.path = permutation;
 		tmp.time_for_courier = dis_for_courier;
 		tmp.loss = loss;
