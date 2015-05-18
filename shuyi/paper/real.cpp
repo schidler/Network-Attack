@@ -7,6 +7,11 @@
 #include <algorithm>
 #define MAXN 15
 #define INF (1<<20)
+
+int show();
+int create_pot(int n);
+int create_line(int id, int x, int y, const char *str = NULL);
+
 using namespace std;
 struct price_all{
 	vector<int> path;
@@ -76,6 +81,13 @@ int get_customer_loss_range()
 
 int show_vector_path(vector<int> &path)
 {
+	static int id = 100007;
+	static char buf[1024];
+	for(int i = 0; i < path.size() - 1; i++){
+		sprintf(buf, "%d->%d:dis %d", path[i], path[i+0], dis[path[i]][path[i+1]]);
+		sleep(3);
+		create_line(id++, path[i], path[i + 1], buf);
+	}
 	for(int i = 1; i < path.size(); i++)
 		printf("->%d", path[i]);
 	return 0;
@@ -113,10 +125,13 @@ int merge_path(vector<int> &a, vector<int> &b, vector<int> &c)
 
 int main()
 {
+//	show();
+//	sleep(5);
 	int a = 0, b = 0, r_len = 0, i = 0, j = 0, k = 0;
 	init();
 	/*输入顶点的个数，包括起点，起点编号为0*/
 	scanf("%d", &num_of_pot);
+	create_pot(num_of_pot);
 	if(num_of_pot > MAXN){
 		fprintf(stderr, "Too much pot here !!!\n");
 		exit(1);
@@ -126,6 +141,7 @@ int main()
 	/*输入路径，从节点a 到节点 b的长度为r_len*/
 	for(i = 0; i < num_of_road; i++){
 		scanf("%d%d%d", &a, &b, &r_len);
+		//create_line(i, a, b);
 		if(a >= MAXN || b >= MAXN || a < 0 || b < 0){
 			fprintf(stderr, "Illegal pot number !!!\n");
 			exit(1);
