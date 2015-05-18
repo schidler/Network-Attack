@@ -66,7 +66,8 @@
 		有没其他动物的时候如果有就将其移除，否则什么都不做。因为在此函数调用之后结果是固定的，也就是除
 		了自己之外其它的动物都会被干掉，结果确定故无需返回值。
 			Actor actor = getOneObjectAtOffset(0, 0, clss);
-			if(actor != null) {
+			if(actor != null) 
+			{
 				getWorld().removeObject(actor);
 			}
 		从实现上看是先检测当前位置上有没有其它动物，有的话将其从当前布局上移除，否则什么事也不做。
@@ -187,11 +188,11 @@
 	   4  public void tryToEatFrog()
 		  检测青蛙是否在此时的视线范围之内，如果在范围之内则吃掉它。
 		   if (canSee(Frog.class) )
-	        {
+	       {
 		        eat(Frog.class);
 				Greenfoot.playSound("game-over.wav");
 				Greenfoot.stop();
-		    }
+		   }
 		  检测青蛙是否在视线范围之内，如果在就吃掉青蛙，并让其从布局中消失，接着播放游戏结束提升音后
 		  结束greenfoot程序运行。
 
