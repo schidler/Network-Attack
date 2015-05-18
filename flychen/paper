@@ -1,0 +1,276 @@
+	陈翔的毕业论文提纲
+
+	0. 摘要
+	1. 语言分析
+		分析此游戏选用Java语言开发的的原因及Java语言的优势
+	2. 开发平台分析
+		游戏在什么平台下开发windows系统还是Linux系统，介绍
+		选用的操作系统的优势
+	3. 集成开发环境的选择及优势分析
+		分析选择greenfoot集成开发环境的理由，及greenfoot的
+		优势。
+	4. 详细介绍游戏规则（包括游戏界面及布局分析）
+	5. 详细说明游戏前景
+	6. 详细说明在实现过程中遇到的技术及非技术难题
+	7. 介绍目前已经实现的游戏的不足及未来改进方案
+	8. 致谢
+	9. 参考文献
+	（以上几点顺序可调）
+	下面介绍整个frog游戏程序的技术细节及详细代码分析
+
+	1. 程序框架
+		整个游戏程序框架是基于greenfoot已有的大框架，我们程序用到的大框架由两个greenfoot产生
+	的基类构成，我们的程序通过继承这两个类进行角色扮演及角色改写。
+	首先分析程序框架的继承体系
+
+    程序布局类 
+		ForgWorld类集成greenfoot产生的布局基类World。
+	程序角色类 
+		Animal类 继承greenfoot产生的角色基类Actor进行不同角色扮演的基类
+			Frog类 继承Animal类实现青蛙的一系列行为及动作
+			Snake类 继承Animal类并实现蛇在游戏进行中一系列行为及动作
+			Bee类 继承Animal类并实现蜜蜂在游戏进行中的一系列行为及动作
+	   Ant类 继承Actor并实现蚂蚁在游戏进行过程中的一系列行为及操作
+
+	   Counter类 继承Actor类并实现在游戏过程中与记分相关的一系列操作
+	
+	下面对每个类进行分别描述：
+		Animal类
+			此类继承Actor类，并实现一些动物所具有的一个公共属性及操作，方便Frog类Snake类及Bee类
+		的继承及改写。
+		方法
+		1 public boolean atWorldEdge()
+			这个方法（函数）是所有动物所需要的方法，所有动物的活动范围都会在一个限制之内，我们称之
+		为World，当动物到World的边界或者足够靠近边界的时候调用次函数返回True，否则返回False，在每种
+		动物实体没步行走之后都会调用这个函数，根据返回值判断是否越界或将要越界，并借此结果进行下一步
+		处理，也就是转弯处理。
+		if(getX() < 10 || getX() > getWorld().getWidth() - 10)
+			return true;
+		if(getY() < 10 || getY() > getWorld().getHeight() - 10)
+			return true;
+		else
+			return false;
+		从上面的实现代码可以看出当动物实体在接近World边界10个像素点的时候就算是与边界发生碰撞，在检测
+		到碰撞的时候会进行相应的操作，具体应对碰撞操作由具体子类去特化处理。
+
+		2  public boolean canSee(Class clss)
+			这个方法是判断动物在某个位置是否会和其他动物重合，从而确定吃与被吃关系。
+		    每个动物子类在运动之后都要重新检测以发现自己目前所在的位置是否与其他动物发生重合（或者说靠近）
+		如果靠近的话就得采取行动，吃或被吃关系。
+		    Actor actor = getOneObjectAtOffset(0, 0, clss);
+			return actor != null;   
+			从这个实现来看是检测这个位置有无其它动物的存在，有返回True，否则返回False。
+
+		3 public void eat(Class clss)
+			此方法检测当前位置是否有动物后将其吃掉，吃掉也就是让相应动物在此位置上消失。在检测此位置上
+		有没其他动物的时候如果有就将其移除，否则什么都不做。因为在此函数调用之后结果是固定的，也就是除
+		了自己之外其它的动物都会被干掉，结果确定故无需返回值。
+			Actor actor = getOneObjectAtOffset(0, 0, clss);
+			if(actor != null) {
+				getWorld().removeObject(actor);
+			}
+		从实现上看是先检测当前位置上有没有其它动物，有的话将其从当前布局上移除，否则什么事也不做。
+
+		下面对Animal类的几个具体子类进行介绍
+
+		Frog 类
+		成员
+			private Counter cunter;
+			记分用的类，青蛙是这个程序的主角，在每次移动之后吃或者被吃都会有相应的得分变化，分数的相关
+		操作就由这个成员及次成员携带的相关操作进行完成。
+		方法
+		1 public Frog(Counter pointCounter)
+			Frog类的构造函数，在定义Frog类的实例的时候要求有一个记分类传入。
+
+		2  public void act()
+			此方法在每次青蛙即将要运动的时候调用，会朝着运动的方向上移动相应的距离，完成之后会检测玩家
+		按键，完成之后会检测自己在当前位置有无猎物，尝试在当前位置寻找。
+			move(4);
+			checkKeys();
+		    tryToEat();
+			由实现可以看出，先移动，移动完成之后进行用户操作检测，最后进行猎物试吃行为。
+	
+		3 public void checkKeys()
+			玩家行为检测，次函数会根据一些控制键被按下的情况进行相应的操作。
+			if ( Greenfoot.isKeyDown("left") )
+			{
+				turn(-5);
+			}
+			if ( Greenfoot.isKeyDown("right") )
+			{
+				turn(5);
+			}
+			如果操作左键被按下那么青蛙移动方向向逆时针转动5度，如果操作右键被按下那么像顺时针转5度.
+			注意此函数只影响青蛙运动方向，对整个游戏五其它影响。
+
+		4 public void tryToEat()
+			此函数会检测在青蛙所在的位置是否有蜜蜂和蚂蚁，如果有的话就吃掉他们。
+
+			if (canSee(Ant.class) )
+			{
+				eat(Ant.class);
+				counter.add(5);
+				Greenfoot.playSound("slurp.wav");
+			}
+        
+			if (canSee(Bee.class) )
+	        {
+		            eat(Bee.class);
+		            counter.add(10);
+					Greenfoot.playSound("slurp.wav"); 
+					createNewBee(); 
+			}
+        
+			if (counter.getValue()>=50) 
+			{
+				gameOver(); 
+			}
+			首先程序会检测在当前位置是否有蚂蚁，如果有蚂蚁就将其吃掉，并进行相应的分数操作，完成之后
+			播放胜利吃掉蚂蚁的提示音乐。对于蜜蜂操作类似，检测当前位置是否有蜜蜂，如果有会将其吃掉，
+			完成之后进行相应的分数操作，并播放提示音。最后如果得分超过50分游戏结束，顺利完成游戏。
+			此处程序涉及到一些游戏规则，吃掉蚂蚁一次加五分，吃掉蜜蜂一次加十分，游戏得分超过或等于五十
+			分后胜利完成游戏。
+
+		5 private void createNewBee()
+			创建一个新蜜蜂实体，完成时候随机插入布局中
+			Bee newBee;
+		    newBee = new Bee(); 
+			World world; 
+			world = getWorld(); 
+			int worldWidth = world.getWidth(); 
+			int worldHeight = world.getHeight(); 
+			int x = Greenfoot.getRandomNumber(worldWidth); 
+			int y = Greenfoot.getRandomNumber(worldHeight);
+			world.addObject(newBee, x, y);
+			首先创建一个蜜蜂实体，然后获取当前布局从而获取当前游戏布局的寬和高，并借此随机生成一个在此
+			布局中的点，并将蜜蜂放于此位置。
+
+
+		6  public void gameOver()
+			青蛙被吃掉，游戏结束
+			Greenfoot.playSound("fanfare.wav");
+			Greenfoot.stop();
+			播放游戏结束提示音，停止greenfoot程序运行。
+
+		
+	   Snake 类
+	   方法
+	   1 public void act()
+		 此类每次让蛇按照当前方向移动四个像素，完成之后随机更换方向，并在边界进行转弯，完成之后在当前
+		 位置尝试吃青蛙。由于蛇没有玩家控制故其一系列操作由系统自动完成。
+		 move(4);
+		 randomTurn(); 
+		 turnAtEdge(); 
+		 tryToEatFrog();
+		 从实现来看，首先移动四个像素的位置，完成之后在由系统决定进行随机转弯，完成之后会对蛇的位置进行
+		 检测，如果蛇已经达到这个世界的边界那么就不能再走下去了，要进行转弯。最后如果当前的位置有青蛙蛇
+		 还要将当前位置的青蛙吃掉，并进行吃掉之后的一系列操作。
+
+	   2 public void randomTurn()
+		 随机转弯，在每次蛇运动之后都会有随机转弯的可能，那么可能性会在10%,每次转动的角度也随机，转动角度
+		 由程序实现保证在20度之内。
+		  if ( Greenfoot.getRandomNumber(100) < 10 )
+	      {
+				turn( Greenfoot.getRandomNumber(40)-20 ); 
+		  }        
+		 通过程序可以看出每次有10%的可能性转弯，每次转弯在20度之内，这些规则的随机性由系统随机数产生的
+		 均匀性保证。
+	   3  public void turnAtEdge()
+		 如果此时已经达到世界的边缘，那么肯定就不能再按照原来的方向接着走下去了，无论如何要转弯，那么
+		 每次检测到蛇已经到到世界的边缘就向顺时针放下转7度。
+		 if (atWorldEdge())
+	     {
+			turn(7); 
+		 }
+		 如果在世界的边缘，顺时针转7度。
+
+	   4  public void tryToEatFrog()
+		  检测青蛙是否在此时的视线范围之内，如果在范围之内则吃掉它。
+		   if (canSee(Frog.class) )
+	        {
+		        eat(Frog.class);
+				Greenfoot.playSound("game-over.wav");
+				Greenfoot.stop();
+		    }
+		  检测青蛙是否在视线范围之内，如果在就吃掉青蛙，并让其从布局中消失，接着播放游戏结束提升音后
+		  结束greenfoot程序运行。
+
+		Bee 类（雷同于Snake类）
+		方法
+		1 public void act()
+			同于Snake类
+
+		2 public void randomTurn()
+			同于Snake类
+
+		3 public void turnAtEdge()
+			同于Snake类
+
+		Ant类
+		由于Ant在此游戏中没有主动的行为，故无一些方法，Ant存在的一些操作都在其他类中有包含。
+
+		Counter类
+		成员
+		1 private static final Color transparent = new Color(0,0,0,0);
+			得分显示牌颜色及透明度，用于左上角的得分显示牌的样式及透明度
+
+		2 private GreenfootImage background;
+			得分显示牌背景
+
+		3 private int value;
+			记录当前得分
+
+		4 private int target;
+			记录目标得分
+
+		方法
+		1 public Counter()
+			构造函数，用于对计数器进行一系列初始化动作。
+			 background = getImage(); 
+			 value = 0; 
+			 target = 0; 
+			 updateImage();
+			 从实现中可以看出，构造函数会先获取计数牌的图像，对当前得分和目标得分进行初始化
+
+	   2 public void act() 
+		    计数器行为，自动显示当前得分到得分牌上，具体实现见源码
+
+	   3 public void add(int score)
+			在青蛙吃掉蜜蜂或蚂蚁后调用，进行相应的加分操作
+	   
+	   4 public int getValue()
+			获取当前的分值
+
+	   5 public void setValue(int newValue)
+			对当前的的得分状态进行修改，设置并显示
+			target = newValue; 
+			value = newValue; 
+			updateImage();
+			代码如描述
+	   6 private void updateImage()
+			在图像上画分数，并显示，这个可能是最有技术含量的一个函数，程序会通过一些图形学
+		的基本知识计算出文字应该在图像上的位置，当然这个位置会包括文字居中显示的起始位置。
+		GreenfootImage image = new GreenfootImage(background);
+		GreenfootImage text = new GreenfootImage("" + value, 22, Color.BLACK, transparent);
+		image.drawImage(text, (image.getWidth()-text.getWidth())/2, 
+								                        (image.getHeight()-text.getHeight())/2);
+        setImage(image);
+		获取背景后进行透明度等一系列参数的设置，并计算出文字应该在图像中的位置后进行文字显示
+
+	
+		FrogWorld 游戏界面布局类
+		方法
+		1 public FrogWorld()
+			构造函数，对游戏界面大小进行设置
+			并进行游戏开始的一些准备工作，此类是整个游戏及用户代码入口
+			super(600, 480, 1);
+			prepare();
+
+		2 private void prepare()
+			游戏开始前的准备工作，准备一些蛇，一些蜜蜂，一些蚂蚁，让游戏开始
+			不过这里代码显然有点臃肿，可以利用一些随机函数对其进行优化。
+
+	至此对程序的技术细节描述结束
+	    
+
+
