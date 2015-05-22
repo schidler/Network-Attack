@@ -1,4 +1,4 @@
-									基于Linux的网络攻击与防御
+					基于Linux的网络攻击与防御
 
 
 
@@ -146,7 +146,72 @@
 
 		2.3 ARP 报文格式，图
 
+		2.4 ARP 攻击的代码实现
+			向网络中的指定机器发送ARP应答，如果目的MAC地址为广播地址则向网络总的所有机器发送ARP应答。
+		此实现接触Libnet对数据包进行构造及发送，当然直接利用Linux 原始套接字对数据包进行构造发送也行。
+		主要代码及解释如下：
+		创建Libnet的的一个句柄
+			l = libnet_init(LIBNET_LINK_ADV, device, err_buf);
+		进行ARP报文的构造
+			libnet_build_arp( // construct arp packet
+            ARPHRD_ETHER, // hardware type ethernet
+            ETHERTYPE_IP, // protocol type
+            MAC_ADDR_LEN, // mac length
+            IP_ADDR_LEN, // protocol length
+            ARPOP_REPLY, // op type
+            (u_int8_t*)src_mac, // source mac addr这里作用是更新目的地的ARP表 IP-MAC
+            (u_int8_t*)&src_ip, // source ip addr
+            (u_int8_t*)dest_mac, // dest mac addr
+            (u_int8_t*)&dest_ip, // dest ip addr
+            NULL, // payload
+            0, // payload length
+            l, // libnet context
+            0 //0 stands to build a new one
+            );
+		给构造好的ARP报文添加以太网头部
+            p_tag = libnet_build_ethernet( // create ethernet header
+	        (u_int8_t*)dest_mac, // dest mac addr
+            (u_int8_t*)src_mac, // source mac addr
+            ETHERTYPE_ARP, // protocol type
+            NULL, // payload
+            0, // payload length
+            l, // libnet context
+            0 // 0 to build a new one
+            );
+		将构造好的数据包发送到网络中
+		libnet_write(l)			
+		销毁Libnet句柄
+		libnet_destroy(l);
+
+		以上代码中libnet_build_ethernet 中的参数dest_mac如果为指定主机网卡的硬件地址则单播给该机器
+		如果为广播地址则广播给网络上的所有主机，对于参数src_mac 如果更改了可以伪装自己。
+
+		3 ARP欺骗攻击下的网络嗅探进行阿里云OSS数据恶意篡改
+		
+		3.1 什么是阿里云OSS，及使用方式
+			OSS是Open Storage Service的简称，是阿里云对外提供的海量数据存储服务。要使用OSS首先去阿里
+		云官网上注册帐号并开通OSS服务，帐号注册完成后会获取到一对access-id 和 access-key，在每次发送
+		请求的时候会根据这对access-id 和 access-key及相关http头部及时间计算处一个签名，并插入到http头部
+		中作为请求认证，插入的头部为 Authorization：OSS + 签名字符串。在请求发往OSS服务器的时候服务器会
+		根据相关信息计算处一个签名，只要此签名认证通过就执行http请求所要求的操作。每次请求会有发生的时间
+		只要请求发生时间与服务器时间相差在15分钟之内通过验证的请求就都会被接受。以上所叙述是在bucket
+		操作需要一定权限的情况下，倘若bucket所有权限公开，则无需进行签名认证。OSS每个外部用户可创建10个
+		bucket，每个bucket内放置的object个数没有限制。OSS会根据bucket名及object名加上数据存放的数据中心
+		生成全球唯一的URL，提供高并发的访问能力。OSS提供PUT GET HEAD 等若干操作。
+
+		3.2 OSS数据恶意修改原理
+			此攻击方式通过捕获到局域网内发往阿里云OSS的请求，由于OSS请求都是基于HTTP的，故可以解析出
+		所有的HTTP头部，由于在认证中没有将Content-Length及Content-Md5加入到签名验证中，而且HTTP请求头部
+		的认证在与服务器时间相差15分钟以内都有效，故可以利用这个缝隙（这个缝隙已足够长），将HTTP头部
+		修改之后将其重放给OSS服务器，进行OSS请请求重放攻击。OSS会根据HTTP请求头部的Content-Length来
+		接收HTTP携带的数据，如过HTTP请求携带的数据多于Content-Length则截断，小于则等待更多的数据送达。
+		因此我们只要将PUT请求中的Content-Length字段恶意修改成0,那么每次PUT进OSS上的数据就会被清空，
+		也就是说文件还在，文件内容没了，这就达到我们删除的目的。如果想对数据进行篡改则直接修改Content
+		-Length字段及跟在HTTP PUT请求的数据，将Content-Length修改成我们篡改后的数据长度，将HTTP PUT请求
+		后跟随的一些数据修改成我们恶意篡改后的数据。
+
+		3.3 攻击方法及过程
 
 
-			
 
+		3.5 此攻击防范措施及代价
