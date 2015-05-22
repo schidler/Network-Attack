@@ -41,9 +41,9 @@ int init()
 	memset(&p_for_customer, 0, sizeof(p_for_customer));
 	memset(&p_for_less_loss, 0, sizeof(p_for_less_loss));
 
-	p_for_courier.time_for_courier = INF*MAXN;
-	p_for_customer.avg_time_for_customer = INF*MAXN;
-	p_for_less_loss.loss = INF*MAXN;
+	p_for_courier.time_for_courier = INF * MAXN;
+	p_for_customer.avg_time_for_customer = INF * MAXN;
+	p_for_less_loss.loss = INF * MAXN;
 	int i = 0, j = 0;
 	for(i=0; i < MAXN; i++)
 		for(j=0; j < MAXN; j++){
@@ -68,7 +68,7 @@ int get_customer_loss_range()
 	for(int i = 0; i < num_of_range; i++){
 		scanf("%d%d%d", &tmp.begin, &tmp.end, &tmp.cost);
 		if(tmp.begin >= tmp.end){
-			fprintf(stderr, "begin must small then end !!!\n");
+			fprintf(stderr, "begin must small than end !!!\n");
 			exit(1);
 		}
 		if(i > 0 && tmp.begin != clr[clr.size() - 1].end){
@@ -125,8 +125,6 @@ int merge_path(vector<int> &a, vector<int> &b, vector<int> &c)
 
 int main()
 {
-//	show();
-//	sleep(5);
 	int a = 0, b = 0, r_len = 0, i = 0, j = 0, k = 0;
 	init();
 	/*输入顶点的个数，包括起点，起点编号为0*/
@@ -141,7 +139,6 @@ int main()
 	/*输入路径，从节点a 到节点 b的长度为r_len*/
 	for(i = 0; i < num_of_road; i++){
 		scanf("%d%d%d", &a, &b, &r_len);
-		//create_line(i, a, b);
 		if(a >= MAXN || b >= MAXN || a < 0 || b < 0){
 			fprintf(stderr, "Illegal pot number !!!\n");
 			exit(1);
@@ -172,17 +169,17 @@ int main()
 	do{
 		
 		int dis_for_courier = dis[0][permutation[0]];
-		int avg_time_for_customer = 0, now_time = dis[0][permutation[0]];
+		int avg_time_for_customer = 0, wait_time = dis[0][permutation[0]];
 		int loss = 0;//Just stand here,use later
-		avg_time_for_customer += now_time;
+		avg_time_for_customer += wait_time;
 
-		if(now_time < clr[0].begin || now_time >= clr[clr.size() - 1].end){
+		if(wait_time < clr[0].begin || wait_time >= clr[clr.size() - 1].end){
 			fprintf(stderr, "Customer time cost out of range\n");
 			exit(1);
 		}
 
 		while(pos < clr.size() -1){
-			if(now_time >= clr[pos].begin && now_time < clr[pos].end)
+			if(wait_time >= clr[pos].begin && wait_time < clr[pos].end)
 				break;
 			else 
 				pos ++;
@@ -191,14 +188,14 @@ int main()
 		loss += clr[pos].cost;
 		for(i = 1; i < num_of_pot - 1; i++){
 			dis_for_courier += dis[permutation[i - 1]][permutation[i]];
-			now_time += dis[permutation[i - 1]][permutation[i]];
-			avg_time_for_customer += now_time;
-			if(now_time < clr[0].begin || now_time >= clr[clr.size() - 1].end){
+			wait_time += dis[permutation[i - 1]][permutation[i]];
+			avg_time_for_customer += wait_time;
+			if(wait_time < clr[0].begin || wait_time >= clr[clr.size() - 1].end){
 				fprintf(stderr, "Customer time cost out of range\n");
 				exit(1);
 			}
 			while(pos < clr.size() -1){
-				if(now_time >= clr[pos].begin && now_time < clr[pos].end)
+				if(wait_time >= clr[pos].begin && wait_time < clr[pos].end)
 					break;
 				else 
 					pos ++;
@@ -213,7 +210,7 @@ int main()
 		tmp.loss = loss;
 		tmp.avg_time_for_customer = avg_time_for_customer;
 
-		if(dis_for_courier < p_for_courier.time_for_courier){//Here can be a function
+		if(dis_for_courier < p_for_courier.time_for_courier){
 			p_for_courier = tmp;
 		}
 
@@ -224,6 +221,7 @@ int main()
 		if(loss < p_for_less_loss.loss){
 			p_for_less_loss = tmp;
 		}
+		/*permutation genernate algorithm in STL 全排*/
 	}while(next_permutation(permutation.begin(), permutation.end()));
 
 	show_ans(p_for_courier, "Best path for courier");

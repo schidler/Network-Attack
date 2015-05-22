@@ -66,7 +66,7 @@ int main (void)
 
         sin.sin_family = AF_INET;
         sin.sin_port = htons(80);
-        sin.sin_addr.s_addr = inet_addr ("211.69.143.151");//211.69.143.10");
+        sin.sin_addr.s_addr = inet_addr ("211.69.143.10");
 
         memset (datagram, 0, 4096);	/* zero out the buffer */
 
@@ -142,6 +142,7 @@ int main (void)
         }
         if(count % 1000 == 0)
             printf("%d\n", count);
+		sleep(1);
         //usleep(100000);
     }
 

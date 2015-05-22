@@ -21,7 +21,6 @@ int main(int const argc, const char ** const argv)
     ubigraph_new_edge(i, (i+1)%(N/2));
   }
 
-  sleep(2);
   ubigraph_clear();
 }
 
