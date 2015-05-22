@@ -2,7 +2,7 @@
 
 
 
-									       摘要
+						摘要
 
 			随着云计算开始出现在大家的视线里，越来越多的传统行业在转型，越来越多的传统行
 		 业开始相信云，开始“上云”，那么网络作为云的基础及必备条件，安全问题一直是各大
@@ -210,7 +210,27 @@
 		-Length字段及跟在HTTP PUT请求的数据，将Content-Length修改成我们篡改后的数据长度，将HTTP PUT请求
 		后跟随的一些数据修改成我们恶意篡改后的数据。
 
-		3.3 攻击方法及过程
+		3.3 攻击方法及过程本机演示
+			1. 从阿里云官网下载osscmd，完成后安装，并注册开通阿里云OSS服务获取id和key
+			2. 创建bucket larry-page2--a
+			3. 上传一个文件 ./osscmd --id=your-access-id --key=your-access-key --host=
+			   oss-cn-hangzhou.aliyuncs.com put my_file oss://larry-page2--a/my_file
+			   在上传过程中启动tcodump进行抓包
+			   sudo tcpdump tcp port 80 -n -s 0 -w /tmp/tcp.cap
+			   my_file 存放的内容为“haha”，上传完成之后下载下来发现里面存放内容确实
+			   为“haha”
+			4. 完成第三步之后打开 /tmp/tcp.cap 找到此请求的HTTP头部，我们关注的是那个头部签名
+			   可以找到类似于下面的一段HTTP请求头部数据
+			   PUT /larry-page2--a/my_file HTTP/1.1
+			   Host: 192.168.0.144
+			   Accept-Encoding: identity
+			   Content-Length: 5
+			   User-Agent: oss-python0.3.5 (linux2)
+	           Host: 192.168.0.144
+			   Expect: 100-Continue
+			   Date: Tue, 30 Dec 2014 03:45:34 GMT
+			   Content-Type: application/octet-stream
+			   Authorization: OSS 15h20xmfv49qmim5pv8p85ez:CPbJXBSdqx4FDNWkGimtIoVIh
 
 
 
