@@ -32,7 +32,7 @@
 		into cloud, and the network as the basic of cloud computing, security become an 
 		important problem that all Cloud computing ventor wants to solve. The security here 
 		we talk about including LAN security WLAN security and so on. What should we do now is not
-		just find the attack was going on but try to defence it. If we can detect the attack which 
+		just find if attack was going on but try to defense it. If we can detect the attack which 
 		is about to happen, that's better. As for the LAN security is far more important. We all know
 		that the product like aliyun ECS, one ECS not only have extranet IP but also have 
 		intranet IP, extranet IP is unique in the world, intranet IP begin with 10 also called
@@ -40,16 +40,17 @@
 		an ECS. Because aliyun dedicate to build a closed-loop ecosystem, and try to solve and 
 		provide all the technical problems and service, provide all you need, so ECS only need
 		to provide an extranet IP and all other works will all done in intranet. Because all 
-		the host is vent by developer, we can't make sure all the bad things that developer 
+		the host is vented by developer, we can't make sure all the bad things that developer 
 		wil never do. From security point of view, we must make a hypothesis that all the 
-		developer do the worst thing in ECS. In that case, LAN security become extremely important
-		The system as big as aliyun ECS not only need to find the attack but also need to 
-		defence the attack in advanse and do active defense, stop the attack before attack
+		developer do the worst things in ECS. In that case, LAN security become extremely important
+		The system as big as aliyun ECS not only need to find the attack in advance but also need to 
+		defense the attack in advance and do active defense, stop the attack before attack
 		about to going on. So the study of LAN security is really count. Because of the protocal
 		already exist in LAN born with defects, attacker will make use of this defects do
 		attack easily, get some sensitive information, lead to economic losses.This paper 
-		based on the attack methods which is already exist do some attack againt some cloud 
-		products witch is popular in out daily life and get some operate privileges.
+		based on the attack methods which is already exist in LAN and do some attack againt 
+		some cloud products witch is popular in our daily life and try to get some operate 
+		privileges.
 				
 		Keywords: Linux; TCP/IP; ARP; driftnet; ettercap; man in the middle; cookie; Libnet; Libpcap;
 		        nc;
