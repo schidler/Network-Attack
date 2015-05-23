@@ -232,6 +232,30 @@
 			   Content-Type: application/octet-stream
 			   Authorization: OSS 15h20xmfv49qmim5pv8p85ez:CPbJXBSdqx4FDNWkGimtIoVIh
 
+			5. 在十五分钟内将上面的HTTP PUT原封不动的请求发送给OSS 服务器，我们可以看到服务器返回HTTP
+			   200 Ok
 
+			6. 对上面HTTP头部进行修改，将Content-Length: 5 改成Content-Length：0,再把这个请求发送给OSS
+			   服务器，同样返回200 Ok
+
+			7. 结果检测，从OSS上把PUT进OSS的文件下载下来，发现内容为空，恶意删除成功。同样用上述方法可以
+			   将数据恶意篡改。
+
+			8. 请求发送方法，可以用Linux socket 与OSS服务器建立一TCP套接字，然后在程序中将请求及数据发送
+			   到套接字的另一端，完成之后在客户端接收应答。还可以用Linux下提供的nc（网络瑞士军刀）直接
+			   与OSS服务器建立一条TCP链接，完成之后直接将要发送的HTTP请求头部及数据输入到终端中去即可。
+			   套接字实现：
+			   sock_fs = socket(AF_INET, SOCK_STREAM, 0);
+			   connect(sock_fd, (struct sockaddr *)&ser_addr, sizeof(ser_addr));
+			   接下来将数据用send函数一次或多次将请求及数据发送给OSS服务器即可。
+			   nc实现：
+			   直接在Linux终端下运行 nc oss-cn-hangzhou.aliyuncs.com 80，将HTTP请求及数据贴入终端即可。
 
 		3.5 此攻击防范措施及代价
+			1. 用HTTPS代替HTTP，这样几乎可以完全避免此类攻击，包括数据偷窥等，但是造成的代价是客户端
+			及服务器在请求数及网络数据量大的时候会消耗大量CPU资源，占用的CPU相比HTTP在同样的请求及数据
+			下高2-3倍。
+
+			2. 将数据md5计算出来，并将其添加进头部，并加入签名计算中，这样做的代价是如果一次传输数据过大
+			计算md5要将所有数据读出进行计算，但是大多数时候数据是一边产生一边传输的，这样就会造成OSS
+			很多场景下不可用。
