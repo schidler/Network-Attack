@@ -22,10 +22,37 @@
 		 相应权限获取，最后从源头上提出防御方案。
 
 
-		 关键字：Linux; TCP/IP; ARP; driftnet; ettercap; 中间人; cookie; Libnet; Libpcap;
-		        nc;
-				
+		 关键字：Linux; TCP/IP; ARP; driftnet; ettercap; 中间人; cookie; Libnet; Libpcap; nc;
 
+
+				       Abstract
+
+			With the cloud computing arise in our life, more and more traditional industry
+		and people choose to believe cloud computing. More of them try to move their business
+		into cloud, and the network as the basic of cloud computing, security become an 
+		important problem that all Cloud computing ventor wants to solve. The security here 
+		we talk about including LAN security WLAN security and so on. What should we do now is not
+		just find the attack was going on but try to defence it. If we can detect the attack which 
+		is about to happen, that's better. As for the LAN security is far more important. We all know
+		that the product like aliyun ECS, one ECS not only have extranet IP but also have 
+		intranet IP, extranet IP is unique in the world, intranet IP begin with 10 also called
+		LAN IP. The intranet IP is used when this host connect with another host which is also
+		an ECS. Because aliyun dedicate to build a closed-loop ecosystem, and try to solve and 
+		provide all the technical problems and service, provide all you need, so ECS only need
+		to provide an extranet IP and all other works will all done in intranet. Because all 
+		the host is vent by developer, we can't make sure all the bad things that developer 
+		wil never do. From security point of view, we must make a hypothesis that all the 
+		developer do the worst thing in ECS. In that case, LAN security become extremely important
+		The system as big as aliyun ECS not only need to find the attack but also need to 
+		defence the attack in advanse and do active defense, stop the attack before attack
+		about to going on. So the study of LAN security is really count. Because of the protocal
+		already exist in LAN born with defects, attacker will make use of this defects do
+		attack easily, get some sensitive information, lead to economic losses.This paper 
+		based on the attack methods which is already exist do some attack againt some cloud 
+		products witch is popular in out daily life and get some operate privileges.
+				
+		Keywords: Linux; TCP/IP; ARP; driftnet; ettercap; man in the middle; cookie; Libnet; Libpcap;
+		        nc;
 		 1 前言
 		 1.1 研究背景
 			随着网络设备的能力增强，大型局域网越来越多，会有更多的用户及网络设备处于同一
@@ -420,12 +447,47 @@
 		前拿到的数据之前不再缺失新数据就可将此次拿到的数据交给上层程序进行解释，在连接即将关闭
 		的时候将未解释的数据提交上层程序进行解释。
 
+		6. 局域网内ARP欺骗攻击的防御及网络攻击的防御
+		
+		6.1 非技术角度
+			非技术角度就是人的意识，一般收到网络攻击的一些受害者通常都是网络安全意识淡薄的一些
+		人，如果稍微有点网络安全意识通常不会受到很低级的攻击。像国内一些大型互联网公司比如淘宝，
+		是几乎全世界黑客攻击的对象，尤其是在双十一的时候，相信有很多黑客选择在那一天对淘宝系统
+		进行攻击。但是也没见系统瘫痪，原因是有一群人在防御这样的攻击，所以说只要有点安全意识，
+		不在如果要输入密码的网址不是HTTPS就坚决不输入密码，绝对不在公共网络上输入对自己比较重要
+		的密码，不把自己重要的数据网在像百度网盘这样的存储介质中，因为像百度网盘这种比较亲民的
+		产品不适合备份重要的机密文件，因为其免费就不能给用户太多的安全性保证，但是存一些视频图像
+		文件，或者说是泄漏出去也无所谓的文件还是非常好的。绝对不对陌生人或者外人透露一些你认为
+		无关紧要的信息，有可能你的一条无关紧要的信息确实没那么紧要，但是若干条你的看似无关紧要
+		的信息的信息连到一起就可能是一条非常敏感的信息。有那么一类人他们叫“社交工程师”，他们的
+		任务就是套出一些你认为一些无关紧要的信息。还有一些自己的一些密码管理，千万不要所有网站
+		用的都是一个密码，这样黑客只要破解你一个网站账户拿到密码那么就拿到你所有账户的密码，自己
+		的密码也要分优先级，比如说CSDN网站的密码和支付宝密码就一定不能一样。自己的密码一定要具备
+		一定的安全性，千万不要和什么生日身份证号码等公开信息挂钩。
+
+		6.2 技术角度
+			这里的技术角度说的当然是如何防御ARP欺骗攻击，因为这个攻击是以上介绍的一系列攻击方式
+		基础，只要能防止ARP攻击就能防止以上任何一种攻击，当然如果有人控制运营上的上游路由器，并
+		能捕获到经过上游路由器上的网络流量，那也没办法。所以这里会讨论一些已有的被动防御方式和
+		主动防御方式及效果。
+
+		好饿，键盘敲不动了.........
 
 
+		参考文献
+		[1]  Kevin D. Mitnick,William L Simon. The Art Of Deception[M].  北京：清华大学出版社. 2014年
 
+		[2]  诸葛建伟 . 网络攻防技术与实践[M].  北京：电子工业出版社. 2011年.
 
+		[3]  W. Richard Stevens, Stephen A. Rago . Advanced Programming in the UNIX Environment[M]. 
+		     北京：人民邮电出版社. 2006年.
 
+		[4] 史蒂文斯 / 芬纳 / 鲁道夫 . Unix Network Programming[M]. 北京：清华大学出版社.2006年.
 
+		[5] （美）博韦，西斯特 . Understanding the Linux Kernel [M].北京：中国电力出版社.2007年.
+
+		[6] Vivek Ramachandran and Sukumar Nandi. Detecting ARP Spoofing: An Active Technique[J]. 
+		    2013年.
 
 		致谢
 			对于这篇论文的完成，首先要感谢我身边的人，尤其是感谢那些每天陪伴在我身边的人，这些人
