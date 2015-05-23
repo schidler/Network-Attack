@@ -310,9 +310,67 @@
 		协议栈包封装的相反顺序对网络数据包进行拆分，当然从底层网卡那过来的数据会经过BPF过滤，只拿到所有
 		数据包中的TCP数据，并对拿到的TCP数据按照连接进行分类，按照序列号进行排序，在TCP数据的流入过程中
 		将数据交给展示模块进行展示，让mpg321进行mp3音乐播放，让数据图像在终端上进行显示等。
-			
+			程序核心流程如下：
+			1. 创建一个pcap句柄，用于操作相应的网络接口interface
+				pc = pcap_open_live(interface, SNAPLEN, promisc, 1000, ebuf);
+	        2. 对BPF表达式filterexpr进行编译，过滤出TCP包，filterexpr = “tcp”，并将编译结果存放在filter中
+				pcap_compile(pc, &filter, (char*)filterexpr, 1, 0);
+			3. 将编译好的过滤条件用于底层网络数据过滤
+                pcap_setfilter(pc, &filter)
+			4. 获取数据链路层所使用的协议，并根据此协议判断底层网络协议头部长度，便于拆包
+			   pkt_offset = get_link_level_hdr_length(pcap_datalink(pc));
+			5. 完成以上过程后创建一个线程处理从底层网络传递过来的数据包，处理函数为packet_capture_thread
+			   pthread_create(&packetth, NULL, packet_capture_thread, NULL);
+			   在packet_capture_thread 函数中调用pcap_dispatch(pc, -1, process_packet, NULL);来
+			   分发处理没一个从下层网络传递过来的网络数据包。每个数据包由process_packet函数进行
+			   处理
+			6. process_packet处理从底层网络传输上来的没一个数据包，并在此函数中将数据进行解包，对数据进行
+			   TCP分组处理。
+
 
 		5.3.2 driftnet 底层拆解包
+			这部分代码属于整个driftnet的整个核心，相当于是实现了一个简单版本的网络协议栈的拆包部分，从
+		底层网络中拿到包括以太网头部的数据包，这是最原始的数据包，我们要从这个数据包中拿到IP数据，判断
+		这个数据属于哪个上层应用程序，并从数据中解析出TCP数据，并将所有TCP数据拿出来。这个任务主要是由
+		process_packet这个函数来完成，这个函数的原型要符合Libpcap定义的包处理回调函数的格式，只有符合
+		这个格式的才能参与回调而不出现语法错误，这个函数一定是要符合如下函数原型才能被pcap_loop调用：
+		void callback(u_char * userarg, const struct pcap_pkthdr * pkthdr, const u_char * packet)
+		首先我们看process_packet这个函数的参数
+		void process_packet(u_char *user, const struct pcap_pkthdr *hdr, const u_char *pkt);
+		user是pcap_loop的最后一个参数，你可以自定义一些结构传进来，再利用C中的类型转换将其解释成你需要
+		的数据结构
+		hdr 是收到数据包的pcap_pkthdr类型，存放的有捕获数据的长度信息等数据
+		packet 是捕获的数据存放内存的首地址
+		下面是拆解过程：
+		1. 拆解以太网头部
+			拆解包的第一步是将数据包的以太网头部去掉，因为以太网头部信息对于应用程序来说是透明的，所
+		以在第一步就要将此头部去掉，直接丢弃packet前面以太网头部长度的数据就好，也就是直接丢弃以太网头部。
+		现在得到的网络数据是：pkt + pkt_offset
+
+		2. 拆解IP数据包头部
+			从剩下的数据中拿出sizeof(struct ip) 长度的数据就是我们需要的IP数据包的头部
+	    memcpy(&ip, pkt + pkt_offset, sizeof(ip));
+		完成之后结构体struct ip ip中存放的数据就是这个包的IP首部。
+		借此我们还能顺便拿到IP头部中的源Ip s和目的Ip d
+		memcpy(&s, &ip.ip_src, sizeof(ip.ip_src));
+		memcpy(&d, &ip.ip_dst, sizeof(ip.ip_dst));
+
+		3. 拆解tcp头部
+			由于我们的BPF表达式设置的就是只捕获TCP的包，如果Libpcap没有bug的话我们捕获到的应全是TCP包，
+		这样我们下一步就是要将TCP包头部拿出来，拿出来的代码相当犀利：
+		memcpy(&tcp, pkt + pkt_offset + (ip.ip_hl << 2), sizeof(tcp));
+		pkt是从最底层网络拿出来的数据，pkt_offset是底层以太网头部长度，这样pkt + pkt_offset就是IP数据包
+		数据，ip.ip_hl是ip数据包头部长度，这样算 pkt + pkt_offset + (ip.ip_hl << 2) 就是IP的数据部分，
+		也就是TCP头部所在的位置，从这个位置开始拿出sizeof(struct tcphdr)长度的数据放入struct tcphdr tcp;
+		中，也就是拿出了TCP头部数据。
+
+		至此就完成了整个数据包的拆封过程，至于TCP携带的是什么数据，这将由我们的driftnet更上层的代码来
+		负责解释。
+
+
+
+
+
 
 		5.3.3 driftnet TCP数据归类及TCP连接管理
 
