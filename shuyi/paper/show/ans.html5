@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+	<html>
+<head>
+	<style>
+	body {
+margin: 10px;
+padding: 10px;
+	}
+#myCanvas {
+border: 1px solid #9C9898;
+}
+</style>
+<script>
+window.onload = function() {
+var canvas = document.getElementById("myCanvas");
+var context1 = canvas.getContext("2d");
+context1.beginPath();
+context1.arc(100, 100, 50, 0, 2 * Math.PI, false);
+context1.fillStyle = "#8ED6FF";
+context1.fill();
+context1.lineWidth = 10;
+context1.strokeStyle = "black";
+context1.stroke();
+arrow2("myCanvas", 0, 0, 10,10,400,400)
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 40pt Calibri"
+context_draw_text.fillText("nidaye", 100, 100);};
+function arrow2(canId,ox,oy,x1,y1,x2,y2){  var sta = new Array(x1,y1);  var end = new Array(x2,y2);  var lineWidth = 5;  var canvas = document.getElementById(canId);  if(canvas == null)return false;  var ctx = canvas.getContext('2d');  ctx.strokeStyle = "blue";  ctx.beginPath();   ctx.translate(ox,oy,0);   ctx.moveTo(sta[0],sta[1]);   ctx.lineWidth = lineWidth;  ctx.lineTo(end[0],end[1]);   ctx.fill();  ctx.stroke();   ctx.save();  ctx.translate(end[0],end[1]);  var ang=(end[0]-sta[0])/(end[1]-sta[1]);  ang=Math.atan(ang);  if(end[1]-sta[1] >= 0){	ctx.rotate(-ang);  }else{	ctx.rotate(Math.PI-ang);  }   ctx.lineTo(-5*lineWidth,-10*lineWidth);   ctx.lineTo(0,-5*lineWidth);   ctx.lineTo(5*lineWidth,-10*lineWidth);   ctx.lineTo(0,0);   ctx.fillStyle = "#8ED6FF";  ctx.fill();   ctx.restore();  ctx.closePath(); }
+</script>
+</head>
+<body>
+<canvas id="myCanvas" width="800" height="500"></canvas>
+</body>
+</html>
