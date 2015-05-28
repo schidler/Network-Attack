@@ -26,6 +26,7 @@ struct customer_loss_range{
 	int end;
 	int cost;
 };
+
 vector<customer_loss_range> clr;
 struct price_all p_for_courier;
 struct price_all p_for_customer;
@@ -35,6 +36,7 @@ vector<int> floyd_path[MAXN][MAXN];
 int num_of_road;
 int courier_cost_per_hour = 1;
 int num_of_range;
+int max_path_length = 0;
 int init()
 {
 	memset(&p_for_courier, 0, sizeof(p_for_courier));
@@ -44,6 +46,7 @@ int init()
 	p_for_courier.time_for_courier = INF * MAXN;
 	p_for_customer.avg_time_for_customer = INF * MAXN;
 	p_for_less_loss.loss = INF * MAXN;
+	max_path_length = 0;
 	int i = 0, j = 0;
 	for(i=0; i < MAXN; i++)
 		for(j=0; j < MAXN; j++){
@@ -83,11 +86,11 @@ int show_vector_path(vector<int> &path)
 {
 	static int id = 100007;
 	static char buf[1024];
-	for(int i = 0; i < path.size() - 1; i++){
+	/*for(int i = 0; i < path.size() - 1; i++){
 		sprintf(buf, "%d->%d:dis %d", path[i], path[i+0], dis[path[i]][path[i+1]]);
 		sleep(3);
 		create_line(id++, path[i], path[i + 1], buf);
-	}
+	}*/
 	for(int i = 1; i < path.size(); i++)
 		printf("->%d", path[i]);
 	return 0;
@@ -129,7 +132,7 @@ int main()
 	init();
 	/*输入顶点的个数，包括起点，起点编号为0*/
 	scanf("%d", &num_of_pot);
-	create_pot(num_of_pot);
+	//create_pot(num_of_pot);
 	if(num_of_pot > MAXN){
 		fprintf(stderr, "Too much pot here !!!\n");
 		exit(1);
@@ -144,6 +147,7 @@ int main()
 			exit(1);
 		}
 		dis[a][b] = r_len;
+		max_path_length += r_len;
 	} 
 	get_customer_loss_range();
 	for(k = 0; k < num_of_pot; k++)
@@ -161,6 +165,19 @@ int main()
 		}
 		printf("\n");
 	}*/
+	//Check if courier can back to original point or not
+	bool check_path = true;
+	for(i = 0; i < num_of_pot; i++){
+		if(dis[i][0] > max_path_length){
+			check_path = false;
+			printf("From %d courier can not back to original point\n", i);
+		}
+	}
+
+	if(!check_path){
+		exit(1);
+	}
+
 	vector<int> permutation;
 	for(i = 1; i < num_of_pot; i++) 
 		permutation.push_back(i);
@@ -174,7 +191,7 @@ int main()
 		avg_time_for_customer += wait_time;
 
 		if(wait_time < clr[0].begin || wait_time >= clr[clr.size() - 1].end){
-			fprintf(stderr, "Customer time cost out of range\n");
+			fprintf(stderr, "Customer time cost out of range, please check your input data\n");
 			exit(1);
 		}
 
@@ -191,7 +208,7 @@ int main()
 			wait_time += dis[permutation[i - 1]][permutation[i]];
 			avg_time_for_customer += wait_time;
 			if(wait_time < clr[0].begin || wait_time >= clr[clr.size() - 1].end){
-				fprintf(stderr, "Customer time cost out of range\n");
+				fprintf(stderr, "Customer time cost out of range, wait time %d\n", wait_time);
 				exit(1);
 			}
 			while(pos < clr.size() -1){
