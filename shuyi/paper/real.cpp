@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <string>
+#include <math.h>
 #include <vector>
 #include <string.h>
 #include <queue>
@@ -11,6 +12,10 @@
 int show();
 int create_pot(int n);
 int create_line(int id, int x, int y, const char *str = NULL);
+int draw_point(const char *context, int center_x, int center_y, int radius, int line_width);
+
+int draw_arrow(int x1, int y1, int x2, int y2);
+int draw_text(int x, int y, int font, const char *text);
 
 using namespace std;
 struct price_all{
@@ -26,6 +31,13 @@ struct customer_loss_range{
 	int end;
 	int cost;
 };
+
+struct point{
+	int x;
+	int y;
+};
+vector<point> all_point;
+vector<point> path;
 
 vector<customer_loss_range> clr;
 struct price_all p_for_courier;
@@ -86,11 +98,6 @@ int show_vector_path(vector<int> &path)
 {
 	static int id = 100007;
 	static char buf[1024];
-	/*for(int i = 0; i < path.size() - 1; i++){
-		sprintf(buf, "%d->%d:dis %d", path[i], path[i+0], dis[path[i]][path[i+1]]);
-		sleep(3);
-		create_line(id++, path[i], path[i + 1], buf);
-	}*/
 	for(int i = 1; i < path.size(); i++)
 		printf("->%d", path[i]);
 	return 0;
@@ -126,26 +133,39 @@ int merge_path(vector<int> &a, vector<int> &b, vector<int> &c)
 	return 0;
 }
 
+int my_dis(point a, point b)
+{
+	return sqrt((a.x - b.x) * ( a.x - b.x) + (a.y - b.y) * (a.y - b.y));
+}
 int main()
 {
 	int a = 0, b = 0, r_len = 0, i = 0, j = 0, k = 0;
 	init();
 	/*输入顶点的个数，包括起点，起点编号为0*/
 	scanf("%d", &num_of_pot);
-	//create_pot(num_of_pot);
+	point tmp_point;
+	for(i = 0; i < num_of_pot; i++){
+		scanf("%d%d", &tmp_point.x, &tmp_point.y);
+		all_point.push_back(tmp_point);
+	}
+
 	if(num_of_pot > MAXN){
 		fprintf(stderr, "Too much pot here !!!\n");
 		exit(1);
 	}
 	/*输入路径条数*/
 	scanf("%d", &num_of_road);
-	/*输入路径，从节点a 到节点 b的长度为r_len*/
+		/*输入路径，从节点a 到节点 b的长度为r_len*/
 	for(i = 0; i < num_of_road; i++){
-		scanf("%d%d%d", &a, &b, &r_len);
-		if(a >= MAXN || b >= MAXN || a < 0 || b < 0){
+		scanf("%d%d", &a, &b);
+		if(a >= MAXN || b >= MAXN || a < 0 || b < 0 || a >= num_of_pot || b >= num_of_pot){
 			fprintf(stderr, "Illegal pot number !!!\n");
 			exit(1);
 		}
+		r_len = my_dis(all_point[a], all_point[b]);
+		tmp_point.x = a;
+		tmp_point.y = b;
+		path.push_back(tmp_point);
 		dis[a][b] = r_len;
 		max_path_length += r_len;
 	} 
