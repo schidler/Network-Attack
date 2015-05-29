@@ -16,7 +16,8 @@ int draw_point(const char *context, int center_x, int center_y, int radius, int 
 
 int draw_arrow(int x1, int y1, int x2, int y2);
 int draw_text(int x, int y, int font, const char *text);
-
+int begin_draw();
+int end_draw();
 using namespace std;
 struct price_all{
 	vector<int> path;
@@ -36,6 +37,7 @@ struct point{
 	int x;
 	int y;
 };
+int my_dis(point a, point b);
 vector<point> all_point;
 vector<point> path;
 
@@ -49,6 +51,37 @@ int num_of_road;
 int courier_cost_per_hour = 1;
 int num_of_range;
 int max_path_length = 0;
+
+const char *context = "context1";
+int draw_figure()
+{
+	static char buf[1024];
+	int i = 0;
+	for(i = 0; i < all_point.size(); i++){
+		draw_point(context, all_point[i].x, all_point[i].y, 10, 3);
+		if(0 == i)
+			sprintf(buf, "Original:%d", i);
+		else
+			sprintf(buf, "%d", i);
+		draw_text(all_point[i].x, all_point[i].y - 20, 20, buf);
+	}
+	return 0;
+}
+
+int draw_all_line()
+{
+	int i = 0;
+	static char buf[1024];
+	point a, b;
+	for(i = 0; i < path.size(); i ++){
+		a = all_point[path[i].x];
+		b = all_point[path[i].y];
+		draw_arrow(a.x, a.y, b.x, b.y);
+		sprintf(buf,"dis:%d", my_dis(a, b));
+		draw_text(a.x + (b.x - a.x) * 2 / 3, a.y + (b.y - a.y) * 2 / 3, 2, buf);
+	}
+	return 0;
+}
 int init()
 {
 	memset(&p_for_courier, 0, sizeof(p_for_courier));
@@ -169,6 +202,11 @@ int main()
 		dis[a][b] = r_len;
 		max_path_length += r_len;
 	} 
+
+	begin_draw();
+	draw_figure();
+	draw_all_line();
+
 	get_customer_loss_range();
 	for(k = 0; k < num_of_pot; k++)
 		for(i = 0; i < num_of_pot; i++)
@@ -195,6 +233,7 @@ int main()
 	}
 
 	if(!check_path){
+		end_draw();
 		exit(1);
 	}
 
@@ -212,6 +251,7 @@ int main()
 
 		if(wait_time < clr[0].begin || wait_time >= clr[clr.size() - 1].end){
 			fprintf(stderr, "Customer time cost out of range, please check your input data\n");
+			end_draw();
 			exit(1);
 		}
 
@@ -264,6 +304,8 @@ int main()
 	show_ans(p_for_courier, "Best path for courier");
 	show_ans(p_for_customer, "Best path for customer");
 	show_ans(p_for_less_loss, "Best path for both");
+	
+	end_draw();
 	return 0;
 }
 

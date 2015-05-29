@@ -1,62 +1,118 @@
-#include <UbigraphAPI.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include <string.h>
 #include <iostream>
-#define MAXN 15 
-static int edge_id = 100007;
-extern int dis[MAXN][MAXN];
-int create_pot(int n)
+#include <fstream>
+using namespace std;
+static ofstream show_file("ans.html5"); ; 
+int arrow();
+int begin_draw()
 {
-	const char *buf[] ={"1asd", "2sdfas", "3", "4", "5"};
-	ubigraph_clear();
-	for(int i = 0; i < n; i ++){
-	//	sprintf(buf, "No.%d --", i);
-		ubigraph_new_vertex_w_id(i);
-		ubigraph_set_vertex_style_attribute(i, "shape", "sphere");
-		ubigraph_set_vertex_style_attribute(i, "size", "0.3");
-		//ubigraph_set_vertex_style_attribute(i, "label", "caca");
-		//sleep(5);
-		//ubigraph_set_vertex_style_attribute(i, "label", "haha");
+	show_file<<"<!DOCTYPE HTML>"<<endl;
+	show_file<<"	<html>"<<endl;
+	show_file<<"<head>"<<endl;
+	show_file<<"	<style>"<<endl;
+	show_file<<"	body {"<<endl;
+	show_file<<"margin: 10px;"<<endl;
+	show_file<<"padding: 10px;"<<endl;
+	show_file<<"	}"<<endl;
+	show_file<<"#myCanvas {"<<endl;
+	show_file<<"border: 1px solid #9C9898;"<<endl;
+	show_file<<"}"<<endl;
+	show_file<<"</style>"<<endl;
+	show_file<<"<script>"<<endl;
+	show_file<<"window.onload = function() {"<<endl;
+	show_file<<"var canvas = document.getElementById(\"myCanvas\");"<<endl;
 
-		ubigraph_new_edge_w_id(edge_id, i, i);
+	return 0;
+}
+int end_draw()
+{
 
-		ubigraph_set_edge_attribute(edge_id, "label", buf[i]);	
-		edge_id ++;
-		printf("%s\n", buf);
-	}
+	show_file<<"};"<<endl;
+	arrow();
+	show_file<<"</script>"<<endl;
+	show_file<<"</head>"<<endl;
+	show_file<<"<body>"<<endl;
+	show_file<<"<canvas id=\"myCanvas\" width=\"800\" height=\"500\"></canvas>"<<endl;
+	show_file<<"</body>"<<endl;
+	show_file<<"</html>"<<endl;
 	return 0;
 }
 
-int create_line(int id, int x, int y, const char *str = NULL)
+int draw_point(const char *context, int center_x, int center_y, int radius, int line_width)
 {
-	ubigraph_new_edge_w_id(id, x, y);
+	show_file<<"var "<<context<<" = canvas.getContext(\"2d\");"<<endl;
+	show_file<<context<<".beginPath();"<<endl;
+	show_file<<context<<".arc("<<center_x<<", "<<center_y<<", "<<radius<<", 0, 2 * Math.PI, false);"<<endl;
+	show_file<<context<<".fillStyle = \"#8ED6FF\";"<<endl;
+	show_file<<context<<".fill();"<<endl;
+	show_file<<context<<".lineWidth = "<<line_width<<";"<<endl;
+	show_file<<context<<".strokeStyle = \"black\";"<<endl;
+	show_file<<context<<".stroke();"<<endl;
+}
 
-	//ubigraph_set_edge_attribute(id, "spline", "true");	
-	ubigraph_set_edge_attribute(id, "arrow", "true");
-	ubigraph_set_edge_attribute(id, "arrow_radius", "0.3");
-	ubigraph_set_edge_attribute(id, "arrow_position", "0.8");
-	ubigraph_set_edge_attribute(id, "showstrain", "true");	
-
-	ubigraph_set_edge_attribute(id, "label", str);	
-	//printf("%d\n", ubigraph_new_edge(x, y));
+int arrow(){
+show_file<<"function arrow2(canId,ox,oy,x1,y1,x2,y2)\
+{\
+  var sta = new Array(x1,y1);\
+  var end = new Array(x2,y2);\
+\
+  var lineWidth = 1;\
+  var canvas = document.getElementById(canId);\
+  if(canvas == null)return false;\
+  var ctx = canvas.getContext(\'2d\');\
+  ctx.strokeStyle = \"blue\";\
+  ctx.beginPath(); \
+  ctx.translate(ox,oy,0); \
+  ctx.moveTo(sta[0],sta[1]); \
+  ctx.lineWidth = lineWidth;\
+  ctx.lineTo(end[0],end[1]); \
+  ctx.fill();\
+  ctx.stroke(); \
+  ctx.save();\
+\
+ctx.moveTo(sta[0] + (end[0]-sta[0])*2/3,sta[1] +(end[1] - sta[1])*2/3);\
+ctx.translate(sta[0] + (end[0]-sta[0])*2/3,sta[1] +(end[1] - sta[1])*2/3);\
+\
+  var ang=(end[0]-sta[0])/(end[1]-sta[1]);\
+  ang=Math.atan(ang);\
+  if(end[1]-sta[1] >= 0){\
+	ctx.rotate(-ang);\
+  }else{\
+	ctx.rotate(Math.PI-ang);\
+  } \
+  ctx.lineTo(-5*lineWidth*2,-10*lineWidth*2); \
+  ctx.lineTo(0,-5*lineWidth); \
+  ctx.lineTo(5*lineWidth*2,-10*lineWidth*2); \
+  ctx.lineTo(0,0); \
+  ctx.fillStyle = \"#FF0000\";\
+\
+  ctx.fill(); \
+  ctx.restore();\
+  ctx.closePath(); \
+}"<<endl;
+return 0;
+}
+int draw_arrow(int x1, int y1, int x2, int y2)
+{
+	show_file<<"arrow2(\"myCanvas\", 0, 0, "<<x1<<","\
+		<<y1<<","<<x2<<","<<y2<<")"<<endl;
+}
+int draw_text(int x, int y, int font, const char *text)
+{
+	show_file<<"var context_draw_text = canvas.getContext(\"2d\");"<<endl;
+	show_file<<"context_draw_text.font = \"italic "<<font<<"pt Calibri\""<<endl;
+	show_file<<"context_draw_text.fillStyle = \'red\';"<<endl;
+	show_file<<"context_draw_text.fillText(\""<<text<<"\", "<<x<<", "<<y<<");";
 	return 0;
 }
-
-int show()
+/*
+int main()
 {
-	ubigraph_clear();
-	const int N = 5;
-	int i;
-	for (i=0; i < N; ++i)
-		ubigraph_new_vertex_w_id(i);
-	for (i=0; i < N; ++i)
-	{
-		char tbuf[20];
-		int r = (int)( i / (float) N * 255);
-		sprintf(tbuf, "#%02x%02x%02x", r, 255-r, 255);
-		ubigraph_set_vertex_attribute(i, "color", tbuf);
-
-		ubigraph_new_edge(i, (i+1)%(N/2));
-	}
-}
-
+	begin_draw();
+	draw_point("context1", 100, 100, 50, 10);
+	draw_arrow(10, 10, 400, 400);
+	draw_text(100, 100, 40, "nidaye");
+	end_draw();
+	return 0;
+}*/
