@@ -12,4 +12,4 @@ show.o: show.cpp
 clean:
 	rm real
 run: real
-	./real < data
+	./real < data_3

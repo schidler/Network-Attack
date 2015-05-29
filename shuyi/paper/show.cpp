@@ -52,16 +52,16 @@ int draw_point(const char *context, int center_x, int center_y, int radius, int 
 }
 
 int arrow(){
-show_file<<"function arrow2(canId,ox,oy,x1,y1,x2,y2)\
+show_file<<"function arrow2(canId,ox,oy,x1,y1,x2,y2,linewidth,color,linecolor)\
 {\
   var sta = new Array(x1,y1);\
   var end = new Array(x2,y2);\
 \
-  var lineWidth = 1;\
+  var lineWidth = linewidth;\
   var canvas = document.getElementById(canId);\
   if(canvas == null)return false;\
   var ctx = canvas.getContext(\'2d\');\
-  ctx.strokeStyle = \"blue\";\
+  ctx.strokeStyle = linecolor;\
   ctx.beginPath(); \
   ctx.translate(ox,oy,0); \
   ctx.moveTo(sta[0],sta[1]); \
@@ -81,11 +81,11 @@ ctx.translate(sta[0] + (end[0]-sta[0])*2/3,sta[1] +(end[1] - sta[1])*2/3);\
   }else{\
 	ctx.rotate(Math.PI-ang);\
   } \
-  ctx.lineTo(-5*lineWidth*2,-10*lineWidth*2); \
-  ctx.lineTo(0,-5*lineWidth); \
-  ctx.lineTo(5*lineWidth*2,-10*lineWidth*2); \
+  ctx.lineTo(-5*2,-10*2); \
+  ctx.lineTo(0,-5*2); \
+  ctx.lineTo(5*2,-10*2); \
   ctx.lineTo(0,0); \
-  ctx.fillStyle = \"#FF0000\";\
+  ctx.fillStyle = color;\
 \
   ctx.fill(); \
   ctx.restore();\
@@ -93,10 +93,10 @@ ctx.translate(sta[0] + (end[0]-sta[0])*2/3,sta[1] +(end[1] - sta[1])*2/3);\
 }"<<endl;
 return 0;
 }
-int draw_arrow(int x1, int y1, int x2, int y2)
+int draw_arrow(int x1, int y1, int x2, int y2, int width = 1, const char *color="#8ED6FF", const char * linecolor="blue")
 {
 	show_file<<"arrow2(\"myCanvas\", 0, 0, "<<x1<<","\
-		<<y1<<","<<x2<<","<<y2<<")"<<endl;
+		<<y1<<","<<x2<<","<<y2<<","<<width<<",\""<<color<<"\",\""<<linecolor<<"\")"<<endl;
 }
 int draw_text(int x, int y, int font, const char *text)
 {

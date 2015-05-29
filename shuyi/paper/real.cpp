@@ -14,7 +14,7 @@ int create_pot(int n);
 int create_line(int id, int x, int y, const char *str = NULL);
 int draw_point(const char *context, int center_x, int center_y, int radius, int line_width);
 
-int draw_arrow(int x1, int y1, int x2, int y2);
+int draw_arrow(int x1, int y1, int x2, int y2, int width = 1, const char *color = "#8ED6FF", const char *linecolor = "blue");
 int draw_text(int x, int y, int font, const char *text);
 int begin_draw();
 int end_draw();
@@ -40,6 +40,7 @@ struct point{
 int my_dis(point a, point b);
 vector<point> all_point;
 vector<point> path;
+vector<int> path_ans;
 
 vector<customer_loss_range> clr;
 struct price_all p_for_courier;
@@ -76,7 +77,7 @@ int draw_all_line()
 	for(i = 0; i < path.size(); i ++){
 		a = all_point[path[i].x];
 		b = all_point[path[i].y];
-		draw_arrow(a.x, a.y, b.x, b.y);
+		draw_arrow(a.x, a.y, b.x, b.y, 2);//, "#000000", "red");
 		sprintf(buf,"dis:%d", my_dis(a, b));
 		draw_text(a.x + (b.x - a.x) * 2 / 3, a.y + (b.y - a.y) * 2 / 3, 2, buf);
 	}
@@ -131,14 +132,32 @@ int show_vector_path(vector<int> &path)
 {
 	static int id = 100007;
 	static char buf[1024];
-	for(int i = 1; i < path.size(); i++)
+	for(int i = 1; i < path.size(); i++){
+		path_ans.push_back(path[i]);
 		printf("->%d", path[i]);
+	}
 	return 0;
 }
 
+int draw_last_real_ans()
+{
+	static bool flag = true;
+	if(!flag)
+		return 0;
+	flag = false;
+	static char buf[1024];
+	int i = 0;
+	for(i = 1; i < path_ans.size(); i++){
+		draw_arrow(all_point[path_ans[i-1]].x, all_point[path_ans[i-1]].y, all_point[path_ans[i]].x, all_point[path_ans[i]].y, 5, "#000000", "red" );
+		sprintf(buf, "%d->%d", path_ans[i-1], path_ans[i]);
+		draw_text((all_point[path_ans[i-1]].x + all_point[path_ans[i]].x)/2, (all_point[path_ans[i-1]].y + all_point[path_ans[i]].y)/2, 15, buf);
+	}
+	return 0;
+}
 
 int show_ans(struct price_all p_a, const char *p = NULL)
 {
+	path_ans.clear();
 	printf("%s\n", p);
 	printf("Courier spend:%d\n", p_a.time_for_courier * courier_cost_per_hour);
 	printf("Avg customer wait time:%d\n", p_a.avg_time_for_customer/(num_of_pot - 1));
@@ -148,12 +167,14 @@ int show_ans(struct price_all p_a, const char *p = NULL)
 		printf("->%d", p_a.path[i]);
 	printf("->0\n");
 	printf("Path detail:0");
+	path_ans.push_back(0);
 	show_vector_path(floyd_path[0][p_a.path[0]]);
 	for(int i = 1; i < p_a.path.size() ; i++){
 		show_vector_path(floyd_path[p_a.path[i - 1]][p_a.path[i]]);
 	}
 	show_vector_path(floyd_path[p_a.path[p_a.path.size() - 1]][0]);
 	printf("\n");
+	draw_last_real_ans();
 	return 0;
 }
 
