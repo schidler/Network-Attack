@@ -153,6 +153,7 @@ int num_of_range;                    //客户等待区间代价的区间个数
 int max_path_length = 0;             //最长路径可能的长度，也就是每条边的长度，用于连通性检测
 
 7.3.3 程序中的一些核心功能函数及部分核心程序过程解释
+（1）程序中的核心函数分析
 /*将路径b和路径c进行合并，并将结果存入a中*/
 int merge_path(vector<int> &a, vector<int> &b, vector<int> &c)
 
@@ -174,6 +175,23 @@ int draw_point(const char *context, int center_x, int center_y, int radius, int 
 int draw_arrow(int x1, int y1, int x2, int y2, int width = 1, const char *color="#8ED6FF", const char * linecolor="blue")
 /*在相应坐标位置书写文字，并对文字大小及内容进行控制*/
 int draw_text(int x, int y, int font, const char *text)
+（2）程序中的核心代码过程分析
+程序核心，进行floyd最短路径求解及路径记录
+for(k = 0; k < num_of_pot; k++)
+for(i = 0; i < num_of_pot; i++)
+for(j = 0; j < num_of_pot; j++){
+	if(dis[i][j] > dis[i][k] + dis[k][j]){
+		/*floyd 的dp思想*/
+		dis[i][j] = dis[i][k] + dis[k][j];
+		/*路径合并*/
+		merge_path(floyd_path[i][j], floyd_path[i][k], floyd_path[k][j]);
+	}   
+}   
+连通性检测，要求从每一个节点都能回到原点，只要没点到原点的距离小于所有路径长度
+之和就说明从此点到原点是有路径存在的。
+for(i = 0; i < num_of_pot; i++)
+if(dis[i][0] > max_path_length)
+check_path = false;
 
 
 7.5 程序需要改进的部分
