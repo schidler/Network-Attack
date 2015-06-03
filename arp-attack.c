@@ -10,13 +10,27 @@ int main(int argc, char *argv[])
     char *device = "wlan0"; 
     char err_buf[LIBNET_ERRBUF_SIZE];
     libnet_ptag_t p_tag;
+	int i = 0;
     unsigned char src_mac[MAC_ADDR_LEN]//自己机器的MAC地址,伪装成自己
           = {0xac, 0x72, 0x89, 0x3b, 0x53, 0x49};
+	int tmp_mac[6];
+	//输入本机MAC地址
+	scanf("%x:%x:%x:%x:%x:%x", &tmp_mac[0], &tmp_mac[1], &tmp_mac[2], &tmp_mac[3], &tmp_mac[4], &tmp_mac[5]);
+	for(i = 0; i < MAC_ADDR_LEN; i++)
+		src_mac[i] = tmp_mac[i];
     //    = {0x00, 0xdf, 0x17, 0x17, 0x17, 0xf2};
 	//ac:72:89:3b:53:49
     unsigned char dest_mac[MAC_ADDR_LEN]
-        = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
-    char *src_ip_str = "192.168.0.137";
+        = {0x78,0x54,0x2e,0xee,0x9a,0x9a};
+//78:54:2e:ee:9a:9a
+		//{0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+	//输入应答报文发往的主机，全1表示广播
+	scanf("%x:%x:%x:%x:%x:%x", &tmp_mac[0], &tmp_mac[1], &tmp_mac[2], &tmp_mac[3], &tmp_mac[4], &tmp_mac[5]);
+	for(i = 0; i < MAC_ADDR_LEN; i++)
+		dest_mac[i] = tmp_mac[i];
+	//输入受害者IP
+    char src_ip_str[1024] = "192.168.0.173";
+	scanf("%s", src_ip_str);
     unsigned long src_ip, dest_ip = 0;
     src_ip = libnet_name2addr4(l, src_ip_str, LIBNET_RESOLVE);
     
