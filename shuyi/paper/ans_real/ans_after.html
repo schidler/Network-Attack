@@ -1,0 +1,476 @@
+<!DOCTYPE HTML>
+	<html>
+<head>
+	<style>
+	body {
+margin: 10px;
+padding: 10px;
+	}
+#myCanvas {
+border: 1px solid #9C9898;
+}
+</style>
+<script>
+window.onload = function() {
+var canvas = document.getElementById("myCanvas");
+var context1 = canvas.getContext("2d");
+context1.beginPath();
+context1.arc(624, 359, 10, 0, 2 * Math.PI, false);
+context1.fillStyle = "#8ED6FF";
+context1.fill();
+context1.lineWidth = 3;
+context1.strokeStyle = "black";
+context1.stroke();
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 20pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("Original:0", 624, 339);var context1 = canvas.getContext("2d");
+context1.beginPath();
+context1.arc(132, 215, 10, 0, 2 * Math.PI, false);
+context1.fillStyle = "#8ED6FF";
+context1.fill();
+context1.lineWidth = 3;
+context1.strokeStyle = "black";
+context1.stroke();
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 20pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("1", 132, 195);var context1 = canvas.getContext("2d");
+context1.beginPath();
+context1.arc(453, 106, 10, 0, 2 * Math.PI, false);
+context1.fillStyle = "#8ED6FF";
+context1.fill();
+context1.lineWidth = 3;
+context1.strokeStyle = "black";
+context1.stroke();
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 20pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("2", 453, 86);var context1 = canvas.getContext("2d");
+context1.beginPath();
+context1.arc(282, 241, 10, 0, 2 * Math.PI, false);
+context1.fillStyle = "#8ED6FF";
+context1.fill();
+context1.lineWidth = 3;
+context1.strokeStyle = "black";
+context1.stroke();
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 20pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("3", 282, 221);var context1 = canvas.getContext("2d");
+context1.beginPath();
+context1.arc(622, 460, 10, 0, 2 * Math.PI, false);
+context1.fillStyle = "#8ED6FF";
+context1.fill();
+context1.lineWidth = 3;
+context1.strokeStyle = "black";
+context1.stroke();
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 20pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("4", 622, 440);var context1 = canvas.getContext("2d");
+context1.beginPath();
+context1.arc(165, 456, 10, 0, 2 * Math.PI, false);
+context1.fillStyle = "#8ED6FF";
+context1.fill();
+context1.lineWidth = 3;
+context1.strokeStyle = "black";
+context1.stroke();
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 20pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("5", 165, 436);var context1 = canvas.getContext("2d");
+context1.beginPath();
+context1.arc(641, 111, 10, 0, 2 * Math.PI, false);
+context1.fillStyle = "#8ED6FF";
+context1.fill();
+context1.lineWidth = 3;
+context1.strokeStyle = "black";
+context1.stroke();
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 20pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("6", 641, 91);var context1 = canvas.getContext("2d");
+context1.beginPath();
+context1.arc(230, 271, 10, 0, 2 * Math.PI, false);
+context1.fillStyle = "#8ED6FF";
+context1.fill();
+context1.lineWidth = 3;
+context1.strokeStyle = "black";
+context1.stroke();
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 20pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("7", 230, 251);var context1 = canvas.getContext("2d");
+context1.beginPath();
+context1.arc(130, 385, 10, 0, 2 * Math.PI, false);
+context1.fillStyle = "#8ED6FF";
+context1.fill();
+context1.lineWidth = 3;
+context1.strokeStyle = "black";
+context1.stroke();
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 20pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("8", 130, 365);var context1 = canvas.getContext("2d");
+context1.beginPath();
+context1.arc(779, 469, 10, 0, 2 * Math.PI, false);
+context1.fillStyle = "#8ED6FF";
+context1.fill();
+context1.lineWidth = 3;
+context1.strokeStyle = "black";
+context1.stroke();
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 20pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("9", 779, 449);var context1 = canvas.getContext("2d");
+context1.beginPath();
+context1.arc(216, 76, 10, 0, 2 * Math.PI, false);
+context1.fillStyle = "#8ED6FF";
+context1.fill();
+context1.lineWidth = 3;
+context1.strokeStyle = "black";
+context1.stroke();
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 20pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("10", 216, 56);arrow2("myCanvas", 0, 0, 624,359,132,215,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:512", 296, 263);arrow2("myCanvas", 0, 0, 453,106,132,215,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:339", 239, 178);arrow2("myCanvas", 0, 0, 216,76,622,460,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:558", 486, 332);arrow2("myCanvas", 0, 0, 165,456,216,76,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:383", 199, 203);arrow2("myCanvas", 0, 0, 216,76,130,385,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:320", 159, 282);arrow2("myCanvas", 0, 0, 282,241,622,460,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:404", 508, 387);arrow2("myCanvas", 0, 0, 165,456,453,106,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:453", 357, 223);arrow2("myCanvas", 0, 0, 622,460,282,241,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:404", 396, 314);arrow2("myCanvas", 0, 0, 453,106,641,111,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:188", 578, 109);arrow2("myCanvas", 0, 0, 622,460,165,456,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:457", 318, 458);arrow2("myCanvas", 0, 0, 282,241,130,385,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:209", 181, 337);arrow2("myCanvas", 0, 0, 624,359,130,385,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:494", 295, 376);arrow2("myCanvas", 0, 0, 622,460,165,456,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:457", 318, 458);arrow2("myCanvas", 0, 0, 230,271,641,111,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:441", 504, 165);arrow2("myCanvas", 0, 0, 165,456,130,385,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:79", 142, 409);arrow2("myCanvas", 0, 0, 230,271,165,456,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:196", 187, 394);arrow2("myCanvas", 0, 0, 641,111,282,241,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:381", 402, 197);arrow2("myCanvas", 0, 0, 165,456,779,469,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:614", 574, 464);arrow2("myCanvas", 0, 0, 130,385,641,111,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:579", 470, 203);arrow2("myCanvas", 0, 0, 132,215,624,359,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:512", 460, 311);arrow2("myCanvas", 0, 0, 622,460,165,456,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:457", 318, 458);arrow2("myCanvas", 0, 0, 165,456,622,460,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:457", 469, 458);arrow2("myCanvas", 0, 0, 165,456,230,271,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:196", 208, 333);arrow2("myCanvas", 0, 0, 624,359,230,271,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:403", 362, 301);arrow2("myCanvas", 0, 0, 132,215,130,385,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:170", 131, 328);arrow2("myCanvas", 0, 0, 165,456,453,106,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:453", 357, 223);arrow2("myCanvas", 0, 0, 624,359,453,106,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:305", 510, 191);arrow2("myCanvas", 0, 0, 165,456,282,241,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:244", 243, 313);arrow2("myCanvas", 0, 0, 130,385,453,106,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:426", 345, 199);arrow2("myCanvas", 0, 0, 624,359,132,215,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:512", 296, 263);arrow2("myCanvas", 0, 0, 641,111,453,106,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:188", 516, 108);arrow2("myCanvas", 0, 0, 622,460,165,456,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:457", 318, 458);arrow2("myCanvas", 0, 0, 453,106,624,359,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:305", 567, 274);arrow2("myCanvas", 0, 0, 641,111,779,469,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:383", 733, 349);arrow2("myCanvas", 0, 0, 779,469,216,76,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:686", 404, 207);arrow2("myCanvas", 0, 0, 282,241,230,271,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:60", 248, 261);arrow2("myCanvas", 0, 0, 779,469,624,359,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:190", 676, 396);arrow2("myCanvas", 0, 0, 165,456,641,111,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:587", 482, 226);arrow2("myCanvas", 0, 0, 282,241,622,460,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:404", 508, 387);arrow2("myCanvas", 0, 0, 216,76,282,241,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:177", 260, 186);arrow2("myCanvas", 0, 0, 641,111,622,460,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:349", 629, 343);arrow2("myCanvas", 0, 0, 165,456,622,460,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:457", 469, 458);arrow2("myCanvas", 0, 0, 165,456,641,111,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:587", 482, 226);arrow2("myCanvas", 0, 0, 641,111,216,76,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:426", 358, 88);arrow2("myCanvas", 0, 0, 132,215,453,106,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:339", 346, 143);arrow2("myCanvas", 0, 0, 282,241,622,460,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:404", 508, 387);arrow2("myCanvas", 0, 0, 216,76,165,456,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:383", 182, 329);arrow2("myCanvas", 0, 0, 165,456,230,271,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:196", 208, 333);arrow2("myCanvas", 0, 0, 165,456,132,215,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:243", 143, 296);arrow2("myCanvas", 0, 0, 779,469,624,359,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:190", 676, 396);arrow2("myCanvas", 0, 0, 165,456,453,106,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:453", 357, 223);arrow2("myCanvas", 0, 0, 624,359,216,76,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:496", 352, 171);arrow2("myCanvas", 0, 0, 641,111,453,106,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:188", 516, 108);arrow2("myCanvas", 0, 0, 641,111,641,111,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:0", 641, 111);arrow2("myCanvas", 0, 0, 230,271,779,469,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:583", 596, 403);arrow2("myCanvas", 0, 0, 624,359,165,456,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:469", 318, 423);arrow2("myCanvas", 0, 0, 230,271,453,106,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:277", 378, 161);arrow2("myCanvas", 0, 0, 641,111,165,456,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:587", 324, 341);arrow2("myCanvas", 0, 0, 165,456,216,76,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:383", 199, 203);arrow2("myCanvas", 0, 0, 453,106,453,106,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:0", 453, 106);arrow2("myCanvas", 0, 0, 641,111,622,460,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:349", 629, 343);arrow2("myCanvas", 0, 0, 230,271,282,241,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:60", 264, 251);arrow2("myCanvas", 0, 0, 216,76,165,456,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:383", 182, 329);arrow2("myCanvas", 0, 0, 622,460,453,106,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:392", 510, 224);arrow2("myCanvas", 0, 0, 624,359,453,106,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:305", 510, 191);arrow2("myCanvas", 0, 0, 453,106,282,241,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:217", 339, 196);arrow2("myCanvas", 0, 0, 453,106,622,460,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:392", 565, 342);arrow2("myCanvas", 0, 0, 641,111,132,215,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:519", 302, 180);arrow2("myCanvas", 0, 0, 165,456,641,111,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:587", 482, 226);arrow2("myCanvas", 0, 0, 622,460,132,215,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:547", 296, 297);arrow2("myCanvas", 0, 0, 622,460,132,215,2,"#8ED6FF","blue")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 2pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("dis:547", 296, 297);arrow2("myCanvas", 0, 0, 624,359,216,76,5,"#000000","red")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 15pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("0->10", 420, 217);arrow2("myCanvas", 0, 0, 216,76,282,241,5,"#000000","red")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 15pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("10->3", 249, 158);arrow2("myCanvas", 0, 0, 282,241,230,271,5,"#000000","red")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 15pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("3->7", 256, 256);arrow2("myCanvas", 0, 0, 230,271,282,241,5,"#000000","red")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 15pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("7->3", 256, 256);arrow2("myCanvas", 0, 0, 282,241,622,460,5,"#000000","red")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 15pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("3->4", 452, 350);arrow2("myCanvas", 0, 0, 622,460,165,456,5,"#000000","red")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 15pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("4->5", 393, 458);arrow2("myCanvas", 0, 0, 165,456,132,215,5,"#000000","red")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 15pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("5->1", 148, 335);arrow2("myCanvas", 0, 0, 132,215,130,385,5,"#000000","red")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 15pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("1->8", 131, 300);arrow2("myCanvas", 0, 0, 130,385,453,106,5,"#000000","red")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 15pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("8->2", 291, 245);arrow2("myCanvas", 0, 0, 453,106,641,111,5,"#000000","red")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 15pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("2->6", 547, 108);arrow2("myCanvas", 0, 0, 641,111,779,469,5,"#000000","red")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 15pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("6->9", 710, 290);arrow2("myCanvas", 0, 0, 779,469,624,359,5,"#000000","red")
+var context_draw_text = canvas.getContext("2d");
+context_draw_text.font = "italic 15pt Calibri"
+context_draw_text.fillStyle = 'red';
+context_draw_text.fillText("9->0", 701, 414);};
+function arrow2(canId,ox,oy,x1,y1,x2,y2,linewidth,color,linecolor){  var sta = new Array(x1,y1);  var end = new Array(x2,y2);  var lineWidth = linewidth;  var canvas = document.getElementById(canId);  if(canvas == null)return false;  var ctx = canvas.getContext('2d');  ctx.strokeStyle = linecolor;  ctx.beginPath();   ctx.translate(ox,oy,0);   ctx.moveTo(sta[0],sta[1]);   ctx.lineWidth = lineWidth;  ctx.lineTo(end[0],end[1]);   ctx.fill();  ctx.stroke();   ctx.save();ctx.moveTo(sta[0] + (end[0]-sta[0])*2/3,sta[1] +(end[1] - sta[1])*2/3);ctx.translate(sta[0] + (end[0]-sta[0])*2/3,sta[1] +(end[1] - sta[1])*2/3);  var ang=(end[0]-sta[0])/(end[1]-sta[1]);  ang=Math.atan(ang);  if(end[1]-sta[1] >= 0){	ctx.rotate(-ang);  }else{	ctx.rotate(Math.PI-ang);  }   ctx.lineTo(-5*2,-10*2);   ctx.lineTo(0,-5*2);   ctx.lineTo(5*2,-10*2);   ctx.lineTo(0,0);   ctx.fillStyle = color;  ctx.fill();   ctx.restore();  ctx.closePath(); }
+</script>
+</head>
+<body>
+<canvas id="myCanvas" width="800" height="500"></canvas>
+</body>
+</html>

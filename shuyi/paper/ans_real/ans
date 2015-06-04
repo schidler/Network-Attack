@@ -1,0 +1,19 @@
+Best path for courier
+Courier spend:9762
+Avg customer wait time:1695
+Loss:9842
+Path(Total):0->10->3->7->4->5->1->8->2->6->9->0
+Path detail:0->10->3->7->3->4->5->1->8->2->6->9->0
+Best path for customer
+Courier spend:12282
+Avg customer wait time:1455
+Loss:12362
+Path(Total):0->2->3->7->5->1->8->6->9->10->4->0
+Path detail:0->2->3->7->5->1->8->6->9->10->4->2->0
+Best path for both
+Courier spend:9762
+Avg customer wait time:1695
+Loss:9842
+Path(Total):0->10->3->7->4->5->1->8->2->6->9->0
+Path detail:0->10->3->7->3->4->5->1->8->2->6->9->0
+
