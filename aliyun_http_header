@@ -1,0 +1,23 @@
+PUT /zhouxinhua/huahua HTTP/1.1
+
+Accept: */*
+
+Cache-Control: no-cache
+
+Expires: Thu, 13 Sep 2012 21:08:42 GMT
+
+Content-Encoding: utf-8
+
+Content-Disposition: attachment;
+
+Content-Type: application/octet-stream
+
+Host: oss-cn-hangzhou.aliyuncs.com
+
+Date: Thu, 04 Jun 2015 04:21:23 GMT
+
+Authorization: OSS wHt3iB4nqia2Bh7y:xHhBKJQp64vrgAQ4x/bhMtJ1frE=
+
+Content-Length: 36586
+
+Expect: 100-continue
