@@ -2,26 +2,29 @@
 #include <stdlib.h>
 #include <iostream>
 #include <stdio.h>
+#include <fstream>
 using namespace std;
 int main()
 {
+	ofstream data_file("data");
 	srand(time(NULL));
-	int i  = 0, tmp = 0;
-	printf("%d\n" , 11);
-	for(i = 0; i < 11; i++)
-		printf("%d %d\n", rand() % 800, rand() % 500);
-	tmp = rand() % 100;
+	int i  = 0, tmp = 0, num_of_pot = 0;
+	num_of_pot = 11;//rand() % 7 + 5;
+	data_file<<num_of_pot<<endl;
+	for(i = 0; i < num_of_pot; i++)
+		data_file<<rand() % 800<<' '<<rand() % 500<<endl;
+	tmp = rand() % ((num_of_pot * num_of_pot)*2/3);
 	tmp += 5;
-	printf("%d\n" , tmp);
+	data_file<<tmp<<endl;
 	for(i = 0; i < tmp; i++)
-		printf("%d %d\n", rand() % 11, rand() % 11);
-	printf("%d\n", rand() % 10);
+		data_file<<rand() % num_of_pot<<' '<<rand() % num_of_pot<<endl;
+	data_file<<rand() % 10<<endl;
 	tmp = rand() % 20;
 	tmp += 5;
-	printf("%d\n" ,tmp);
+	data_file<<tmp<<endl;
 	for(i = 0; i < tmp - 1; i++){
-		printf("%d %d %d\n", i * 50, (i + 1)*50, i);
+		data_file<<i * 50<<' '<<(i + 1)*50<<' '<< i<<endl;
 	}
-	printf("%d %d %d\n", i*50, (i+1000)*50, i);
+	data_file<<i*50<<' '<<(i+10000)*50<<' '<<i<<endl;
 	return 0;
 }

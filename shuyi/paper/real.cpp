@@ -174,7 +174,8 @@ int show_ans(struct price_all p_a, const char *p = NULL)
 	}
 	show_vector_path(floyd_path[p_a.path[p_a.path.size() - 1]][0]);
 	printf("\n");
-	draw_last_real_ans();
+//
+	draw_last_real_ans(); 
 	return 0;
 }
 
