@@ -8,17 +8,14 @@
 #include <algorithm>
 #define MAXN 15
 #define INF (1<<20)
-
-int show();
-int create_pot(int n);
-int create_line(int id, int x, int y, const char *str = NULL);
+using namespace std;
 int draw_point(const char *context, int center_x, int center_y, int radius, int line_width);
 
 int draw_arrow(int x1, int y1, int x2, int y2, int width = 1, const char *color = "#8ED6FF", const char *linecolor = "blue");
 int draw_text(int x, int y, int font, const char *text);
 int begin_draw();
 int end_draw();
-using namespace std;
+
 struct price_all{
 	vector<int> path;
 	int time_for_courier;
@@ -117,7 +114,7 @@ int get_customer_loss_range()
 	for(int i = 0; i < num_of_range; i++){
 		scanf("%d%d%d", &tmp.begin, &tmp.end, &tmp.cost);
 		if(tmp.begin >= tmp.end){
-			fprintf(stderr, "begin must small than end !!!\n");
+			fprintf(stderr, "Begin must small than end !!!\n");
 			exit(1);
 		}
 		if(i > 0 && tmp.begin != clr[clr.size() - 1].end){
@@ -174,7 +171,7 @@ int show_ans(struct price_all p_a, const char *p = NULL)
 	}
 	show_vector_path(floyd_path[p_a.path[p_a.path.size() - 1]][0]);
 	printf("\n");
-//
+	/*注释掉这一行表示不画出最终结果，否则就用红线画出最终结果，这里的最终结果只针对快递员最优*/
 	draw_last_real_ans(); 
 	return 0;
 }
